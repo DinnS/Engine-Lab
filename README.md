@@ -2,6 +2,8 @@
 
 ## Description
 
+Main library : SFML
+
 A prototype game designed for potential use in the development of game engines and 2D games.
 
 ```
