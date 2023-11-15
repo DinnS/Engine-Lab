@@ -35,6 +35,7 @@ public:
 
 	// Accessors
 	const sf::Texture* getTileTextureSheet() const;
+	const int getLayerSize(const int x, const int y, const int layer) const;
 
 	// Functions
 	void addTile(const int x, const int y, const int z, const sf::IntRect& texture_rect, const bool& collision, const short& type);

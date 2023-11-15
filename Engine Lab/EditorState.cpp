@@ -10,6 +10,7 @@ void EditorState::initVariables()
 	this->collision = false;
 	this->type = TileTypes::DEFAULT;
 	this->cameraSpeed = 300.f;
+	this->layer = 0;
 }
 
 void EditorState::initView()
@@ -73,19 +74,19 @@ void EditorState::initPauseMenu()
 {
 	this->pauseMenu = new PauseMenu(*this->window, this->font);
 
-	this->pauseMenu->addButton("SAVE", 400.f, "Save");
-	this->pauseMenu->addButton("LOAD", 550.f, "Load");
+	this->pauseMenu->addButton("LOAD", 400.f, "Load");
+	this->pauseMenu->addButton("SAVE", 550.f, "Save");
 	this->pauseMenu->addButton("QUIT", 700.f, "Quit");
 }
 
 void EditorState::initButtons()
 {
-	/*this->buttons["GAME_STATE"] = new Button(
-		185.f, 250.f, 250.f, 70.f,
-		&this->font, "New Game", 50,
-		sf::Color(70, 70, 70, 200), sf::Color(250, 250, 250, 250), sf::Color(20, 20, 20, 50),
-		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0)
-	);*/
+	this->buttons["TILE_SHEET"] = new gui::Button(
+		10.f, 30.f, 50.f, 70.f,
+		&this->font, "TL", 26,
+		sf::Color(255, 255, 255, 200), sf::Color(255, 255, 255, 250), sf::Color(255, 255, 255, 50),
+		sf::Color(70, 70, 70, 200), sf::Color(150, 150, 150, 250), sf::Color(20, 20, 20, 50)
+	);
 
 
 }
@@ -93,6 +94,7 @@ void EditorState::initButtons()
 void EditorState::initTileMap()
 {
 	this->tileMap = new TileMap(this->stateData->gridSize, 10, 10, "Resources/Tiles/tilesheet.png");
+	
 }
 
 
@@ -115,12 +117,15 @@ void EditorState::initGui()
 	this->selectorRect.setTexture(this->tileMap->getTileTextureSheet());
 	this->selectorRect.setTextureRect(this->textureRect);
 
+
+
 	// Texture selector
 	this->textureSelector = new gui::TextureSelector(
-		20.f, 20.f, 480.f, 480.f, 
-		this->stateData->gridSize, this->tileMap->getTileTextureSheet(), 
-		this->font, "TS"
+		100.f, 20.f, 512.f, 512.f, 
+		this->stateData->gridSize, this->tileMap->getTileTextureSheet()
 	);
+
+
 
 
 }
@@ -155,6 +160,7 @@ EditorState::~EditorState() {
 	delete this->tileMap;
 
 	delete this->textureSelector;
+
 }
 
 
@@ -204,7 +210,7 @@ void EditorState::updateEditorInput(const float& dt)
 				this->textureRect = this->textureSelector->getTextureSelectorRect();
 			}
 		}
-		
+
 		
 	}
 	// Remove a tile from the tilemap
@@ -217,7 +223,7 @@ void EditorState::updateEditorInput(const float& dt)
 			}
 		}
 		
-		
+
 		
 	}
 
@@ -252,6 +258,12 @@ void EditorState::updateButtons()
 		i.second->update(this->mousePosWindow);
 	}
 
+	// Open texture sheet
+	if (this->buttons["TILE_SHEET"]->isPressed() && this->getKeyTime()) {
+		this->textureSelector->toggleTextureSelector();
+	}
+
+	
 
 }
 
@@ -271,21 +283,25 @@ void EditorState::updateGui(const float& dt)
 		this->mousePosGrid.x << " | " << this->mousePosGrid.y << "\n" <<
 		this->textureRect.left << " | " << this->textureRect.top << "\n" <<
 		"Collision: " << this->collision << "\n" <<
-		"Types: " << this->type;
+		"Types: " << this->type << "\n" <<
+		"Tiles: " << this->tileMap->getLayerSize(this->mousePosGrid.x, this->mousePosGrid.y, this->layer);
 	this->cursorText.setString(ss.str());
 
+	
 	
 }
 
 
 void EditorState::updatePauseMenuButtons()
 {
-	if (this->pauseMenu->isButtonPressed("SAVE")) {
-		this->tileMap->saveToFile("Data/text.slmp");
+	if (this->pauseMenu->isButtonPressed("LOAD")) {
+		this->tileMap->loadFromFile("Data/map.slmp");
+
 	}
 
-	if (this->pauseMenu->isButtonPressed("LOAD")) {
-		this->tileMap->loadFromFile("Data/text.slmp");
+	if (this->pauseMenu->isButtonPressed("SAVE")) {
+		this->tileMap->saveToFile("Data/map.slmp");
+		
 	}
 
 	if (this->pauseMenu->isButtonPressed("QUIT")) {
@@ -334,9 +350,11 @@ void EditorState::renderGui(sf::RenderTarget& target)
 		target.setView(this->view);
 		target.draw(this->selectorRect);
 	}
+
 	
 	target.setView(this->window->getDefaultView());
 	this->textureSelector->render(target);
+
 	target.draw(this->sidebar);
 
 

@@ -257,22 +257,19 @@ void gui::DropDownList::render(sf::RenderTarget& target)
 
 // Constructors/Destructors
 
-gui::TextureSelector::TextureSelector(float x, float y, float width, float height, float gridSize, const sf::Texture* texture_sheet, sf::Font& font, std::string text)
+gui::TextureSelector::TextureSelector(float x, float y, float width, float height, float gridSize, const sf::Texture* texture_sheet)
 {
 	// Init variables
-	this->keyTime = 0.f;
-	this->keyTimeMax = 3.f;
 
-
+	// If cursor in textureSelector
 	this->active = false;
+
+	// Hide or show textureSelector
+	this->hidden = true;
+
+
 	this->gridSize = gridSize;
-	this->hidden = false;
-	this->hideButton = new gui::Button(
-		(x + width) + 50.f, y + 10.f, 50.f, 50.f,
-		&font, text, 24,
-		sf::Color(255, 255, 255, 200), sf::Color(255, 255, 255, 250), sf::Color(255, 255, 255, 50),
-		sf::Color(70, 70, 70, 200), sf::Color(150, 150, 150, 250), sf::Color(20, 20, 20, 50)
-	);
+	
 
 	// Bounds settings
 	this->bounds.setSize(sf::Vector2f(width, height));
@@ -312,7 +309,7 @@ gui::TextureSelector::TextureSelector(float x, float y, float width, float heigh
 
 gui::TextureSelector::~TextureSelector()
 {
-	delete this->hideButton;
+	
 }
 
 
@@ -329,41 +326,23 @@ const sf::IntRect& gui::TextureSelector::getTextureSelectorRect() const
 }
 
 
-const bool gui::TextureSelector::getKeyTime()
-{
-	if (this->keyTime >= this->keyTimeMax) {
-		this->keyTime = 0.f;
-		return true;
-	}
-
-	return false;
-
-}
 
 // Functions
-void gui::TextureSelector::updateKeyTime(const float& dt)
-{
-	if (this->keyTime < this->keyTimeMax) {
-		this->keyTime += 10.f * dt;
+
+
+void gui::TextureSelector::toggleTextureSelector() {
+	if (this->hidden) {
+		this->hidden = false;
+	}
+	else {
+		this->hidden = true;
 	}
 }
 
 
 void gui::TextureSelector::update(const sf::Vector2i& mousePosWindow, const float& dt)
 {
-	this->updateKeyTime(dt);
-	this->hideButton->update(mousePosWindow);
-
-	if (this->hideButton->isPressed() && this->getKeyTime()) {
-		if (this->hidden) {
-			this->hidden = false;
-		}
-		else {
-			this->hidden = true;
-		}
-	}
-
-
+	
 	if (!this->hidden) {
 		// Checking bounds active
 		if (this->bounds.getGlobalBounds().contains(static_cast<sf::Vector2f>(mousePosWindow)))
@@ -403,6 +382,5 @@ void gui::TextureSelector::render(sf::RenderTarget& target)
 		}
 	}
 
-	this->hideButton->render(target);
 	
 }

@@ -29,13 +29,14 @@ private:
 
 	sf::IntRect textureRect;
 	sf::RectangleShape selectorRect;
-	
+
 	gui::TextureSelector* textureSelector;
 
 
 	bool collision;
 	short type;
 	float cameraSpeed;
+	int layer;
 
 	// Initializer functions 
 	void initVariables();

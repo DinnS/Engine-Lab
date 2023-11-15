@@ -100,8 +100,8 @@ void GameState::initPlayers()
 
 void GameState::initTileMap()
 {
-	this->tileMap = new TileMap(this->stateData->gridSize, 10, 10, "Resources/Tiles/tilesheet.png");
-	this->tileMap->loadFromFile("Data/text.slmp");
+	this->tileMap = new TileMap(this->stateData->gridSize, 12, 12, "Resources/Tiles/tilesheet.png");
+	this->tileMap->loadFromFile("Data/map.slmp");
 }
 
 
