@@ -320,6 +320,11 @@ const bool& gui::TextureSelector::getActive() const
 	return this->active;
 }
 
+const bool& gui::TextureSelector::getHidden() const
+{
+	return this->hidden;
+}
+
 const sf::IntRect& gui::TextureSelector::getTextureSelectorRect() const
 {
 	return this->textureSelectorRect;

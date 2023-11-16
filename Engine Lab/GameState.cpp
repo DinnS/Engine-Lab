@@ -100,8 +100,10 @@ void GameState::initPlayers()
 
 void GameState::initTileMap()
 {
-	this->tileMap = new TileMap(this->stateData->gridSize, 12, 12, "Resources/Tiles/tilesheet.png");
-	this->tileMap->loadFromFile("Data/map.slmp");
+	this->tileMap = new TileMap(this->stateData->gridSize, 12, 12, "Resources/Tiles/tileSheet.png");
+	this->propsMap = new TileMap(this->stateData->gridSize, 12, 12, "Resources/Tiles/propsSheet.png");
+	this->tileMap->loadFromFile("Data/tileMap.slmp");
+	this->propsMap->loadFromFile("Data/propsMap.slmp");
 }
 
 
@@ -179,6 +181,9 @@ void GameState::updateTileMap(const float& dt)
 {
 	this->tileMap->update();
 	this->tileMap->updateCollision(this->player, dt);
+
+	this->propsMap->update();
+	this->propsMap->updateCollision(this->player, dt);
 }
 
 void GameState::update(const float& dt)
@@ -217,6 +222,7 @@ void GameState::render(sf::RenderTarget* target)
 
 	this->renderTexture.setView(this->view);
 	this->tileMap->render(this->renderTexture, this->player->getGridPosition(static_cast<int>(this->stateData->gridSize)));
+	this->propsMap->render(this->renderTexture, this->player->getGridPosition(static_cast<int>(this->stateData->gridSize)));
 
 	this->player->render(this->renderTexture);
 	

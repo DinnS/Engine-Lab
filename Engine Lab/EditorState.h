@@ -24,6 +24,7 @@ private:
 	std::map<std::string, gui::Button*> buttons;
 
 	TileMap* tileMap;
+	TileMap* propsMap;
 
 	sf::RectangleShape sidebar;	 
 
@@ -31,6 +32,7 @@ private:
 	sf::RectangleShape selectorRect;
 
 	gui::TextureSelector* textureSelector;
+	gui::TextureSelector* textureSelectorProps;
 
 
 	bool collision;

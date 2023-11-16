@@ -82,8 +82,15 @@ void EditorState::initPauseMenu()
 void EditorState::initButtons()
 {
 	this->buttons["TILE_SHEET"] = new gui::Button(
-		10.f, 30.f, 50.f, 70.f,
-		&this->font, "TL", 26,
+		10.f, 30.f, 50.f, 80.f,
+		&this->font, "TS", 26,
+		sf::Color(255, 255, 255, 200), sf::Color(255, 255, 255, 250), sf::Color(255, 255, 255, 50),
+		sf::Color(70, 70, 70, 200), sf::Color(150, 150, 150, 250), sf::Color(20, 20, 20, 50)
+	);
+
+	this->buttons["PROPS_SHEET"] = new gui::Button(
+		10.f, 250.f, 50.f, 80.f,
+		&this->font, "PS", 26,
 		sf::Color(255, 255, 255, 200), sf::Color(255, 255, 255, 250), sf::Color(255, 255, 255, 50),
 		sf::Color(70, 70, 70, 200), sf::Color(150, 150, 150, 250), sf::Color(20, 20, 20, 50)
 	);
@@ -93,8 +100,8 @@ void EditorState::initButtons()
 
 void EditorState::initTileMap()
 {
-	this->tileMap = new TileMap(this->stateData->gridSize, 10, 10, "Resources/Tiles/tilesheet.png");
-	
+	this->tileMap = new TileMap(this->stateData->gridSize, 10, 10, "Resources/Tiles/tileSheet.png");
+	this->propsMap = new TileMap(this->stateData->gridSize, 10, 10, "Resources/Tiles/propsSheet.png");
 }
 
 
@@ -123,6 +130,11 @@ void EditorState::initGui()
 	this->textureSelector = new gui::TextureSelector(
 		100.f, 20.f, 512.f, 512.f, 
 		this->stateData->gridSize, this->tileMap->getTileTextureSheet()
+	);
+
+	this->textureSelectorProps = new gui::TextureSelector(
+		100.f, 20.f, 512.f, 512.f,
+		this->stateData->gridSize, this->propsMap->getTileTextureSheet()
 	);
 
 
@@ -158,8 +170,10 @@ EditorState::~EditorState() {
 	delete this->pauseMenu;
 
 	delete this->tileMap;
+	delete this->propsMap;
 
 	delete this->textureSelector;
+	delete this->textureSelectorProps;
 
 }
 
@@ -201,15 +215,30 @@ void EditorState::updateEditorInput(const float& dt)
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && this->getKeyTime()) 
 	{
 		if (!this->sidebar.getGlobalBounds().contains(sf::Vector2f(this->mousePosWindow))) {
-			if (!this->textureSelector->getActive())
-			{
-				this->tileMap->addTile(this->mousePosGrid.x, this->mousePosGrid.y, 0, this->textureRect, this->collision, this->type);
+			if (!textureSelector->getHidden()) {
+				if (!this->textureSelector->getActive())
+				{
+					this->tileMap->addTile(this->mousePosGrid.x, this->mousePosGrid.y, 0, this->textureRect, this->collision, this->type);
+				}
+				else
+				{
+					this->selectorRect.setTexture(this->tileMap->getTileTextureSheet());
+					this->textureRect = this->textureSelector->getTextureSelectorRect();
+				}
 			}
-			else
-			{
-				this->textureRect = this->textureSelector->getTextureSelectorRect();
+			else if (!textureSelectorProps->getHidden()) {
+				if (!this->textureSelectorProps->getActive())
+				{
+					this->propsMap->addTile(this->mousePosGrid.x, this->mousePosGrid.y, 0, this->textureRect, this->collision, this->type);
+				}
+				else
+				{
+					this->selectorRect.setTexture(this->propsMap->getTileTextureSheet());
+					this->textureRect = this->textureSelectorProps->getTextureSelectorRect();
+				}
 			}
 		}
+
 
 		
 	}
@@ -217,9 +246,12 @@ void EditorState::updateEditorInput(const float& dt)
 	else if((sf::Mouse::isButtonPressed(sf::Mouse::Right) && this->getKeyTime()))  
 	{
 		if (!this->sidebar.getGlobalBounds().contains(sf::Vector2f(this->mousePosWindow))) {
-			if (!this->textureSelector->getActive())
+			if (!this->textureSelector->getActive() && !textureSelector->getHidden())
 			{
 				this->tileMap->removeTile(this->mousePosGrid.x, this->mousePosGrid.y, 0);
+			}
+			else if (!this->textureSelectorProps->getActive() && !textureSelectorProps->getHidden()) {
+				this->propsMap->removeTile(this->mousePosGrid.x, this->mousePosGrid.y, 0);
 			}
 		}
 		
@@ -258,11 +290,25 @@ void EditorState::updateButtons()
 		i.second->update(this->mousePosWindow);
 	}
 
-	// Open texture sheet
+	// Open texture tile sheet
 	if (this->buttons["TILE_SHEET"]->isPressed() && this->getKeyTime()) {
 		this->textureSelector->toggleTextureSelector();
+
+		// Close other texture sheets
+		if (!this->textureSelectorProps->getHidden()) {
+			this->textureSelectorProps->toggleTextureSelector();
+		}
 	}
 
+	// Open texture props sheet
+	if (this->buttons["PROPS_SHEET"]->isPressed() && this->getKeyTime()) {
+		this->textureSelectorProps->toggleTextureSelector();
+
+		// Close other texture sheets
+		if (!this->textureSelector->getHidden()) {
+			this->textureSelector->toggleTextureSelector();
+		}
+	}
 	
 
 }
@@ -270,11 +316,12 @@ void EditorState::updateButtons()
 void EditorState::updateGui(const float& dt)
 {
 	this->textureSelector->update(this->mousePosWindow, dt);
+	this->textureSelectorProps->update(this->mousePosWindow, dt);
 
+	
 	if (!this->textureSelector->getActive()) {
 		this->selectorRect.setTextureRect(this->textureRect);
 		this->selectorRect.setPosition(this->mousePosGrid.x * this->stateData->gridSize, this->mousePosGrid.y * this->stateData->gridSize);
-
 	}
 
 	this->cursorText.setPosition(this->mousePosView.x + 100.f, this->mousePosView.y - 50.f);
@@ -284,23 +331,25 @@ void EditorState::updateGui(const float& dt)
 		this->textureRect.left << " | " << this->textureRect.top << "\n" <<
 		"Collision: " << this->collision << "\n" <<
 		"Types: " << this->type << "\n" <<
-		"Tiles: " << this->tileMap->getLayerSize(this->mousePosGrid.x, this->mousePosGrid.y, this->layer);
+		"Tiles: " << this->tileMap->getLayerSize(this->mousePosGrid.x, this->mousePosGrid.y, this->layer) << "\n" <<
+		"Props: " << this->propsMap->getLayerSize(this->mousePosGrid.x, this->mousePosGrid.y, this->layer);
 	this->cursorText.setString(ss.str());
+	
 
-	
-	
+
 }
 
 
 void EditorState::updatePauseMenuButtons()
 {
 	if (this->pauseMenu->isButtonPressed("LOAD")) {
-		this->tileMap->loadFromFile("Data/map.slmp");
-
+		this->tileMap->loadFromFile("Data/tileMap.slmp");
+		this->propsMap->loadFromFile("Data/propsMap.slmp");
 	}
 
 	if (this->pauseMenu->isButtonPressed("SAVE")) {
-		this->tileMap->saveToFile("Data/map.slmp");
+		this->tileMap->saveToFile("Data/tileMap.slmp");
+		this->propsMap->saveToFile("Data/propsMap.slmp");
 		
 	}
 
@@ -351,9 +400,21 @@ void EditorState::renderGui(sf::RenderTarget& target)
 		target.draw(this->selectorRect);
 	}
 
+	// 
+	if (!this->textureSelectorProps->getActive()) {
+		target.setView(this->view);
+		target.draw(this->selectorRect);
+	}
+
+	//
 	
 	target.setView(this->window->getDefaultView());
+
 	this->textureSelector->render(target);
+
+	//
+	this->textureSelectorProps->render(target);
+	//
 
 	target.draw(this->sidebar);
 
@@ -374,6 +435,9 @@ void EditorState::render(sf::RenderTarget* target)
 	target->setView(this->view);
 	
 	this->tileMap->render(*target, this->mousePosGrid);
+	//
+	this->propsMap->render(*target, this->mousePosGrid);
+	//
 
 	target->setView(this->window->getDefaultView());
 	this->renderButtons(*target);

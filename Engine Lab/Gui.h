@@ -120,6 +120,7 @@ namespace gui {
 
 		// Accessors
 		const bool& getActive() const;
+		const bool& getHidden() const;
 		const sf::IntRect& getTextureSelectorRect() const;
 		
 

@@ -24,6 +24,7 @@ private:
 	Player* player;
 
 	TileMap* tileMap;
+	TileMap* propsMap;
 
 
 	// Initializer functions 
