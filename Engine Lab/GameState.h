@@ -25,7 +25,7 @@ private:
 
 	TileMap* tileMap;
 	TileMap* propsMap;
-
+	TileMap* greenMap;
 
 	// Initializer functions 
 	void initDeferredRender();

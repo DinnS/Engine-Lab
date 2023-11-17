@@ -95,6 +95,12 @@ void EditorState::initButtons()
 		sf::Color(70, 70, 70, 200), sf::Color(150, 150, 150, 250), sf::Color(20, 20, 20, 50)
 	);
 
+	this->buttons["GREEN_SHEET"] = new gui::Button(
+		10.f, 470.f, 50.f, 80.f,
+		&this->font, "GS", 26,
+		sf::Color(255, 255, 255, 200), sf::Color(255, 255, 255, 250), sf::Color(255, 255, 255, 50),
+		sf::Color(70, 70, 70, 200), sf::Color(150, 150, 150, 250), sf::Color(20, 20, 20, 50)
+	);
 
 }
 
@@ -102,6 +108,7 @@ void EditorState::initTileMap()
 {
 	this->tileMap = new TileMap(this->stateData->gridSize, 10, 10, "Resources/Tiles/tileSheet.png");
 	this->propsMap = new TileMap(this->stateData->gridSize, 10, 10, "Resources/Tiles/propsSheet.png");
+	this->greenMap = new TileMap(this->stateData->gridSize, 10, 10, "Resources/Tiles/greenSheet.png");
 }
 
 
@@ -137,6 +144,10 @@ void EditorState::initGui()
 		this->stateData->gridSize, this->propsMap->getTileTextureSheet()
 	);
 
+	this->textureSelectorGreen = new gui::TextureSelector(
+		100.f, 20.f, 512.f, 512.f,
+		this->stateData->gridSize, this->greenMap->getTileTextureSheet()
+	);
 
 
 
@@ -171,10 +182,11 @@ EditorState::~EditorState() {
 
 	delete this->tileMap;
 	delete this->propsMap;
+	delete this->greenMap;
 
 	delete this->textureSelector;
 	delete this->textureSelectorProps;
-
+	delete this->textureSelectorGreen;
 }
 
 
@@ -236,6 +248,17 @@ void EditorState::updateEditorInput(const float& dt)
 					this->selectorRect.setTexture(this->propsMap->getTileTextureSheet());
 					this->textureRect = this->textureSelectorProps->getTextureSelectorRect();
 				}
+			} 
+			else if (!textureSelectorGreen->getHidden()) {
+				if (!this->textureSelectorGreen->getActive())
+				{
+					this->greenMap->addTile(this->mousePosGrid.x, this->mousePosGrid.y, 0, this->textureRect, this->collision, this->type);
+				}
+				else
+				{
+					this->selectorRect.setTexture(this->greenMap->getTileTextureSheet());
+					this->textureRect = this->textureSelectorGreen->getTextureSelectorRect();
+				}
 			}
 		}
 
@@ -252,6 +275,9 @@ void EditorState::updateEditorInput(const float& dt)
 			}
 			else if (!this->textureSelectorProps->getActive() && !textureSelectorProps->getHidden()) {
 				this->propsMap->removeTile(this->mousePosGrid.x, this->mousePosGrid.y, 0);
+			}
+			else if (!this->textureSelectorGreen->getActive() && !textureSelectorGreen->getHidden()) {
+				this->greenMap->removeTile(this->mousePosGrid.x, this->mousePosGrid.y, 0);
 			}
 		}
 		
@@ -298,6 +324,10 @@ void EditorState::updateButtons()
 		if (!this->textureSelectorProps->getHidden()) {
 			this->textureSelectorProps->toggleTextureSelector();
 		}
+
+		if (!this->textureSelectorGreen->getHidden()) {
+			this->textureSelectorGreen->toggleTextureSelector();
+		}
 	}
 
 	// Open texture props sheet
@@ -308,6 +338,24 @@ void EditorState::updateButtons()
 		if (!this->textureSelector->getHidden()) {
 			this->textureSelector->toggleTextureSelector();
 		}
+
+		if (!this->textureSelectorGreen->getHidden()) {
+			this->textureSelectorGreen->toggleTextureSelector();
+		}
+	}
+
+	// Open texture green sheet
+	if (this->buttons["GREEN_SHEET"]->isPressed() && this->getKeyTime()) {
+		this->textureSelectorGreen->toggleTextureSelector();
+
+		// Close other texture sheets
+		if (!this->textureSelector->getHidden()) {
+			this->textureSelector->toggleTextureSelector();
+		}
+
+		if (!this->textureSelectorProps->getHidden()) {
+			this->textureSelectorProps->toggleTextureSelector();
+		}
 	}
 	
 
@@ -317,7 +365,7 @@ void EditorState::updateGui(const float& dt)
 {
 	this->textureSelector->update(this->mousePosWindow, dt);
 	this->textureSelectorProps->update(this->mousePosWindow, dt);
-
+	this->textureSelectorGreen->update(this->mousePosWindow, dt);
 	
 	if (!this->textureSelector->getActive()) {
 		this->selectorRect.setTextureRect(this->textureRect);
@@ -332,7 +380,8 @@ void EditorState::updateGui(const float& dt)
 		"Collision: " << this->collision << "\n" <<
 		"Types: " << this->type << "\n" <<
 		"Tiles: " << this->tileMap->getLayerSize(this->mousePosGrid.x, this->mousePosGrid.y, this->layer) << "\n" <<
-		"Props: " << this->propsMap->getLayerSize(this->mousePosGrid.x, this->mousePosGrid.y, this->layer);
+		"Props: " << this->propsMap->getLayerSize(this->mousePosGrid.x, this->mousePosGrid.y, this->layer) << "\n" <<
+		"Green : " << this->greenMap->getLayerSize(this->mousePosGrid.x, this->mousePosGrid.y, this->layer);
 	this->cursorText.setString(ss.str());
 	
 
@@ -345,12 +394,13 @@ void EditorState::updatePauseMenuButtons()
 	if (this->pauseMenu->isButtonPressed("LOAD")) {
 		this->tileMap->loadFromFile("Data/tileMap.slmp");
 		this->propsMap->loadFromFile("Data/propsMap.slmp");
+		this->greenMap->loadFromFile("Data/greenMap.slmp");
 	}
 
 	if (this->pauseMenu->isButtonPressed("SAVE")) {
 		this->tileMap->saveToFile("Data/tileMap.slmp");
 		this->propsMap->saveToFile("Data/propsMap.slmp");
-		
+		this->greenMap->saveToFile("Data/greenMap.slmp");
 	}
 
 	if (this->pauseMenu->isButtonPressed("QUIT")) {
@@ -406,6 +456,10 @@ void EditorState::renderGui(sf::RenderTarget& target)
 		target.draw(this->selectorRect);
 	}
 
+	if (!this->textureSelectorGreen->getActive()) {
+		target.setView(this->view);
+		target.draw(this->selectorRect);
+	}
 	//
 	
 	target.setView(this->window->getDefaultView());
@@ -414,6 +468,7 @@ void EditorState::renderGui(sf::RenderTarget& target)
 
 	//
 	this->textureSelectorProps->render(target);
+	this->textureSelectorGreen->render(target);
 	//
 
 	target.draw(this->sidebar);
@@ -437,6 +492,7 @@ void EditorState::render(sf::RenderTarget* target)
 	this->tileMap->render(*target, this->mousePosGrid);
 	//
 	this->propsMap->render(*target, this->mousePosGrid);
+	this->greenMap->render(*target, this->mousePosGrid);
 	//
 
 	target->setView(this->window->getDefaultView());

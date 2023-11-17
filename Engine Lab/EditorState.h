@@ -25,6 +25,7 @@ private:
 
 	TileMap* tileMap;
 	TileMap* propsMap;
+	TileMap* greenMap;
 
 	sf::RectangleShape sidebar;	 
 
@@ -33,6 +34,7 @@ private:
 
 	gui::TextureSelector* textureSelector;
 	gui::TextureSelector* textureSelectorProps;
+	gui::TextureSelector* textureSelectorGreen;
 
 
 	bool collision;

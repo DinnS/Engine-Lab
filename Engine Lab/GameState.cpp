@@ -102,8 +102,10 @@ void GameState::initTileMap()
 {
 	this->tileMap = new TileMap(this->stateData->gridSize, 12, 12, "Resources/Tiles/tileSheet.png");
 	this->propsMap = new TileMap(this->stateData->gridSize, 12, 12, "Resources/Tiles/propsSheet.png");
+	this->greenMap = new TileMap(this->stateData->gridSize, 12, 12, "Resources/Tiles/greenSheet.png");
 	this->tileMap->loadFromFile("Data/tileMap.slmp");
 	this->propsMap->loadFromFile("Data/propsMap.slmp");
+	this->greenMap->loadFromFile("Data/greenMap.slmp");
 }
 
 
@@ -126,6 +128,8 @@ GameState::~GameState() {
 	delete this->pauseMenu;
 	delete this->player;
 	delete this->tileMap;
+	delete this->propsMap;
+	delete this->greenMap;
 }
 
 
@@ -184,6 +188,9 @@ void GameState::updateTileMap(const float& dt)
 
 	this->propsMap->update();
 	this->propsMap->updateCollision(this->player, dt);
+
+	this->greenMap->update();
+	this->greenMap->updateCollision(this->player, dt);
 }
 
 void GameState::update(const float& dt)
@@ -223,7 +230,7 @@ void GameState::render(sf::RenderTarget* target)
 	this->renderTexture.setView(this->view);
 	this->tileMap->render(this->renderTexture, this->player->getGridPosition(static_cast<int>(this->stateData->gridSize)));
 	this->propsMap->render(this->renderTexture, this->player->getGridPosition(static_cast<int>(this->stateData->gridSize)));
-
+	this->greenMap->render(this->renderTexture, this->player->getGridPosition(static_cast<int>(this->stateData->gridSize)));
 	this->player->render(this->renderTexture);
 	
 	if (this->pause) {  // Pause menu render
