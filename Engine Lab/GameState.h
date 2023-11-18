@@ -22,10 +22,9 @@ private:
 	PauseMenu* pauseMenu;
 
 	Player* player;
-
-	TileMap* tileMap;
-	TileMap* propsMap;
-	TileMap* greenMap;
+	
+	std::vector<std::string> tileNames;
+	std::map<std::string, TileMap*> tileMaps;
 
 	// Initializer functions 
 	void initDeferredRender();

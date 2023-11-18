@@ -23,19 +23,17 @@ private:
 
 	std::map<std::string, gui::Button*> buttons;
 
-	TileMap* tileMap;
-	TileMap* propsMap;
-	TileMap* greenMap;
+	std::vector<std::string> tileNames;
+
+	std::map<std::string, TileMap*> tileMaps;
+
 
 	sf::RectangleShape sidebar;	 
 
 	sf::IntRect textureRect;
 	sf::RectangleShape selectorRect;
 
-	gui::TextureSelector* textureSelector;
-	gui::TextureSelector* textureSelectorProps;
-	gui::TextureSelector* textureSelectorGreen;
-
+	std::map<std::string, gui::TextureSelector*> texturesSelector;
 
 	bool collision;
 	short type;

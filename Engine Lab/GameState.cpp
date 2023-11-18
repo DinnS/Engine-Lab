@@ -100,12 +100,13 @@ void GameState::initPlayers()
 
 void GameState::initTileMap()
 {
-	this->tileMap = new TileMap(this->stateData->gridSize, 12, 12, "Resources/Tiles/tileSheet.png");
-	this->propsMap = new TileMap(this->stateData->gridSize, 12, 12, "Resources/Tiles/propsSheet.png");
-	this->greenMap = new TileMap(this->stateData->gridSize, 12, 12, "Resources/Tiles/greenSheet.png");
-	this->tileMap->loadFromFile("Data/tileMap.slmp");
-	this->propsMap->loadFromFile("Data/propsMap.slmp");
-	this->greenMap->loadFromFile("Data/greenMap.slmp");
+	this->tileNames = {"terrain", "flora", "prop" };
+	for (auto& i : this->tileNames) {
+		this->tileMaps[i] = new TileMap(this->stateData->gridSize, 10, 10, "Resources/Tiles/" + i + "Sheet.png");
+
+		this->tileMaps[i]->loadFromFile("Data/" + i + "Map.slmp");
+	}
+	
 }
 
 
@@ -127,9 +128,10 @@ GameState::GameState(StateData* state_data)
 GameState::~GameState() {
 	delete this->pauseMenu;
 	delete this->player;
-	delete this->tileMap;
-	delete this->propsMap;
-	delete this->greenMap;
+
+	for (auto& i : this->tileMaps) {
+		delete i.second;
+	}
 }
 
 
@@ -183,14 +185,10 @@ void GameState::updatePauseMenuButtons()
 
 void GameState::updateTileMap(const float& dt)
 {
-	this->tileMap->update();
-	this->tileMap->updateCollision(this->player, dt);
-
-	this->propsMap->update();
-	this->propsMap->updateCollision(this->player, dt);
-
-	this->greenMap->update();
-	this->greenMap->updateCollision(this->player, dt);
+	for (auto& i : this->tileNames) {
+		this->tileMaps[i]->update();
+		this->tileMaps[i]->updateCollision(this->player, dt);
+	}
 }
 
 void GameState::update(const float& dt)
@@ -228,9 +226,9 @@ void GameState::render(sf::RenderTarget* target)
 	this->renderTexture.clear();
 
 	this->renderTexture.setView(this->view);
-	this->tileMap->render(this->renderTexture, this->player->getGridPosition(static_cast<int>(this->stateData->gridSize)));
-	this->propsMap->render(this->renderTexture, this->player->getGridPosition(static_cast<int>(this->stateData->gridSize)));
-	this->greenMap->render(this->renderTexture, this->player->getGridPosition(static_cast<int>(this->stateData->gridSize)));
+	for (auto& i : this->tileNames) {
+		this->tileMaps[i]->render(this->renderTexture, this->player->getGridPosition(static_cast<int>(this->stateData->gridSize)));
+	}
 	this->player->render(this->renderTexture);
 	
 	if (this->pause) {  // Pause menu render
