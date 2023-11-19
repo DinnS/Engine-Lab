@@ -28,12 +28,15 @@ private:
 	std::map<std::string, TileMap*> tileMaps;
 	std::string lastUsedTileMaps;
 
-	sf::RectangleShape sidebar;	 
+	sf::RectangleShape toolbar;
+	sf::RectangleShape tileSheetBar;
 
 	sf::IntRect textureRect;
 	sf::RectangleShape selectorRect;
 
 	std::map<std::string, gui::TextureSelector*> texturesSelector;
+	std::pair<float, float> textureSelectorSize;
+	
 
 	bool collision;
 	short type;
@@ -48,9 +51,9 @@ private:
 	void initTexts();
 	void initKeybinds();
 	void initPauseMenu();
-	void initButtons();
 	void initTileMap();
 	void initGui();
+	void initButtons();
 
 public:
 	// Constructors/Destructors

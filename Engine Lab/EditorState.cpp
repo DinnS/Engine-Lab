@@ -79,37 +79,13 @@ void EditorState::initPauseMenu()
 	this->pauseMenu->addButton("QUIT", 700.f, "Quit");
 }
 
-void EditorState::initButtons()
-{
-	this->buttons["TERRAIN_SHEET"] = new gui::Button(
-		10.f, 30.f, 50.f, 80.f,
-		&this->font, "TS", 26,
-		sf::Color(255, 255, 255, 200), sf::Color(255, 255, 255, 250), sf::Color(255, 255, 255, 50),
-		sf::Color(70, 70, 70, 200), sf::Color(150, 150, 150, 250), sf::Color(20, 20, 20, 50)
-	);
-
-	this->buttons["PROP_SHEET"] = new gui::Button(
-		10.f, 250.f, 50.f, 80.f,
-		&this->font, "PS", 26,
-		sf::Color(255, 255, 255, 200), sf::Color(255, 255, 255, 250), sf::Color(255, 255, 255, 50),
-		sf::Color(70, 70, 70, 200), sf::Color(150, 150, 150, 250), sf::Color(20, 20, 20, 50)
-	);
-
-	this->buttons["FLORA_SHEET"] = new gui::Button(
-		10.f, 470.f, 50.f, 80.f,
-		&this->font, "FS", 26,
-		sf::Color(255, 255, 255, 200), sf::Color(255, 255, 255, 250), sf::Color(255, 255, 255, 50),
-		sf::Color(70, 70, 70, 200), sf::Color(150, 150, 150, 250), sf::Color(20, 20, 20, 50)
-	);
-
-}
 
 void EditorState::initTileMap()
 {
 	this->tileNames = {"terrain", "prop", "flora"};
-	this->lastUsedTileMaps = "";
+	this->lastUsedTileMaps = "terrain";
 	for (auto& i : this->tileNames) {
-		this->tileMaps[i] = new TileMap(this->stateData->gridSize, 10, 10, "Resources/Tiles/" + i + "Sheet.png");
+		this->tileMaps[i] = new TileMap(this->stateData->gridSize, 12, 12, "Resources/Tiles/" + i + "Sheet.png");
 	}
 	
 }
@@ -117,11 +93,18 @@ void EditorState::initTileMap()
 
 void EditorState::initGui()
 {
-	// Side bar
-	this->sidebar.setSize(sf::Vector2f(80.f, static_cast<float>(this->stateData->gfxSettings->resolution.height)));
-	this->sidebar.setFillColor(sf::Color(50, 50, 50, 100));
-	this->sidebar.setOutlineThickness(1.f);
-	this->sidebar.setOutlineColor(sf::Color(100, 100, 100, 150));
+	// Bars
+	this->toolbar.setSize(sf::Vector2f(80.f, static_cast<float>(this->stateData->gfxSettings->resolution.height)));
+	this->toolbar.setFillColor(sf::Color(50, 50, 50, 100));
+	this->toolbar.setOutlineThickness(1.f);
+	this->toolbar.setOutlineColor(sf::Color(100, 100, 100, 150));
+	this->toolbar.setPosition(0,0);
+
+	this->tileSheetBar.setSize(sf::Vector2f(80.f, static_cast<float>(this->stateData->gfxSettings->resolution.height)));
+	this->tileSheetBar.setFillColor(sf::Color(50, 50, 50, 100));
+	this->tileSheetBar.setOutlineThickness(1.f);
+	this->tileSheetBar.setOutlineColor(sf::Color(100, 100, 100, 150));
+	this->tileSheetBar.setPosition(static_cast<float>(this->stateData->gfxSettings->resolution.width) - 80.f, 0);
 
 	
 	// Selector 
@@ -134,17 +117,55 @@ void EditorState::initGui()
 	this->selectorRect.setTexture(this->tileMaps[this->tileNames[0]]->getTileTextureSheet());
 	this->selectorRect.setTextureRect(this->textureRect);
 
-
+	this->textureSelectorSize.first = 1536.f;
+	this->textureSelectorSize.second = 384.f;
 
 	// Texture selector
 	for (auto& i : this->tileNames) {
 		this->texturesSelector[i] = new gui::TextureSelector(
-			100.f, 20.f, 512.f, 512.f,
+			(static_cast<float>(this->stateData->gfxSettings->resolution.width) / 2) - (this->textureSelectorSize.first / 2.f), static_cast<float>(this->stateData->gfxSettings->resolution.height) - this->textureSelectorSize.second - 50, 
+			this->textureSelectorSize.first, this->textureSelectorSize.second,
 			this->stateData->gridSize, this->tileMaps[i]->getTileTextureSheet()
 		);
 	}
 
 
+
+}
+
+
+void EditorState::initButtons()
+{
+	// Tool button
+	/*this->buttons["FILL"] = new gui::Button(
+		this->toolbar.getPosition().x + (this->toolbar.getGlobalBounds().width / 2.f) - (50.f / 2.f), 30.f, 50.f, 80.f,
+		&this->font, "FILL", 26,
+		sf::Color(255, 255, 255, 200), sf::Color(255, 255, 255, 250), sf::Color(255, 255, 255, 50),
+		sf::Color(70, 70, 70, 200), sf::Color(150, 150, 150, 250), sf::Color(20, 20, 20, 50)
+	);*/
+
+	// Sheet button
+
+	this->buttons["TERRAIN_SHEET"] = new gui::Button(
+		this->tileSheetBar.getPosition().x + (this->tileSheetBar.getGlobalBounds().width / 2.f) - (50.f / 2.f), 30.f, 50.f, 80.f,
+		&this->font, "TS", 26,
+		sf::Color(255, 255, 255, 200), sf::Color(255, 255, 255, 250), sf::Color(255, 255, 255, 50),
+		sf::Color(70, 70, 70, 200), sf::Color(150, 150, 150, 250), sf::Color(20, 20, 20, 50)
+	);
+
+	this->buttons["PROP_SHEET"] = new gui::Button(
+		this->tileSheetBar.getPosition().x + (this->tileSheetBar.getGlobalBounds().width / 2.f) - (50.f / 2.f), 250.f, 50.f, 80.f,
+		&this->font, "PS", 26,
+		sf::Color(255, 255, 255, 200), sf::Color(255, 255, 255, 250), sf::Color(255, 255, 255, 50),
+		sf::Color(70, 70, 70, 200), sf::Color(150, 150, 150, 250), sf::Color(20, 20, 20, 50)
+	);
+
+	this->buttons["FLORA_SHEET"] = new gui::Button(
+		this->tileSheetBar.getPosition().x + (this->tileSheetBar.getGlobalBounds().width / 2.f) - (50.f / 2.f), 470.f, 50.f, 80.f,
+		&this->font, "FS", 26,
+		sf::Color(255, 255, 255, 200), sf::Color(255, 255, 255, 250), sf::Color(255, 255, 255, 50),
+		sf::Color(70, 70, 70, 200), sf::Color(150, 150, 150, 250), sf::Color(20, 20, 20, 50)
+	);
 
 }
 
@@ -161,9 +182,9 @@ EditorState::EditorState(StateData* state_data)
 	this->initTexts();
 	this->initKeybinds();
 	this->initPauseMenu();
-	this->initButtons();
 	this->initTileMap();
 	this->initGui();
+	this->initButtons();
 	
 }
 
@@ -222,7 +243,9 @@ void EditorState::updateEditorInput(const float& dt)
 	// Add tile to the tilemap
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && this->getKeyTime()) 
 	{
-		if (!this->sidebar.getGlobalBounds().contains(sf::Vector2f(this->mousePosWindow))) {
+		if (!this->toolbar.getGlobalBounds().contains(sf::Vector2f(this->mousePosWindow)) &&
+			!this->tileSheetBar.getGlobalBounds().contains(sf::Vector2f(this->mousePosWindow))
+		) {
 			for (auto& i : this->tileNames) {
 				if (this->lastUsedTileMaps == i) {
 					if (!this->texturesSelector[i]->getActive())
@@ -238,14 +261,13 @@ void EditorState::updateEditorInput(const float& dt)
 				}
 			}
 		}
-
-
-		
 	}
 	// Remove a tile from the tilemap
 	else if((sf::Mouse::isButtonPressed(sf::Mouse::Right) && this->getKeyTime()))  
 	{
-		if (!this->sidebar.getGlobalBounds().contains(sf::Vector2f(this->mousePosWindow))) {
+		if (!this->toolbar.getGlobalBounds().contains(sf::Vector2f(this->mousePosWindow)) &&
+			!this->tileSheetBar.getGlobalBounds().contains(sf::Vector2f(this->mousePosWindow))
+		) {
 		
 			for (auto& i : this->tileNames) {
 				if (!this->texturesSelector[i]->getActive() && this->lastUsedTileMaps == i)
@@ -289,6 +311,10 @@ void EditorState::updateButtons()
 	for (auto &i : this->buttons) {
 		i.second->update(this->mousePosWindow);
 	}
+
+	// Tool buttons
+	
+
 
 	// Open texture tile sheet
 	if (this->buttons["TERRAIN_SHEET"]->isPressed() && this->getKeyTime()) {
@@ -447,8 +473,8 @@ void EditorState::renderGui(sf::RenderTarget& target)
 		this->texturesSelector[i]->render(target);
 	}
 
-	target.draw(this->sidebar);
-
+	//target.draw(this->toolbar);
+	target.draw(this->tileSheetBar);
 
 	target.setView(this->view);
 	target.draw(this->cursorText);
