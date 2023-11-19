@@ -26,7 +26,7 @@ private:
 	std::vector<std::string> tileNames;
 
 	std::map<std::string, TileMap*> tileMaps;
-
+	std::string lastUsedTileMaps;
 
 	sf::RectangleShape sidebar;	 
 

@@ -100,7 +100,7 @@ void GameState::initPlayers()
 
 void GameState::initTileMap()
 {
-	this->tileNames = {"terrain", "flora", "prop" };
+	this->tileNames = {"terrain", "prop", "flora" };
 	for (auto& i : this->tileNames) {
 		this->tileMaps[i] = new TileMap(this->stateData->gridSize, 10, 10, "Resources/Tiles/" + i + "Sheet.png");
 

@@ -106,7 +106,8 @@ void EditorState::initButtons()
 
 void EditorState::initTileMap()
 {
-	this->tileNames = {"terrain", "flora", "prop"};
+	this->tileNames = {"terrain", "prop", "flora"};
+	this->lastUsedTileMaps = "";
 	for (auto& i : this->tileNames) {
 		this->tileMaps[i] = new TileMap(this->stateData->gridSize, 10, 10, "Resources/Tiles/" + i + "Sheet.png");
 	}
@@ -223,7 +224,7 @@ void EditorState::updateEditorInput(const float& dt)
 	{
 		if (!this->sidebar.getGlobalBounds().contains(sf::Vector2f(this->mousePosWindow))) {
 			for (auto& i : this->tileNames) {
-				if (!this->texturesSelector[i]->getHidden()) {
+				if (this->lastUsedTileMaps == i) {
 					if (!this->texturesSelector[i]->getActive())
 					{
 						this->tileMaps[i]->addTile(this->mousePosGrid.x, this->mousePosGrid.y, 0, this->textureRect, this->collision, this->type);
@@ -247,7 +248,7 @@ void EditorState::updateEditorInput(const float& dt)
 		if (!this->sidebar.getGlobalBounds().contains(sf::Vector2f(this->mousePosWindow))) {
 		
 			for (auto& i : this->tileNames) {
-				if (!this->texturesSelector[i]->getActive() && !this->texturesSelector[i]->getHidden())
+				if (!this->texturesSelector[i]->getActive() && this->lastUsedTileMaps == i)
 				{
 					this->tileMaps[i]->removeTile(this->mousePosGrid.x, this->mousePosGrid.y, 0);
 				}
@@ -301,6 +302,9 @@ void EditorState::updateButtons()
 		if (!this->texturesSelector[this->tileNames[2]]->getHidden()) {
 			this->texturesSelector[this->tileNames[2]]->toggleTextureSelector();
 		}
+
+		// Save lastTileMap
+		this->lastUsedTileMaps = "terrain";
 	}
 
 	// Open texture props sheet
@@ -315,6 +319,9 @@ void EditorState::updateButtons()
 		if (!this->texturesSelector[this->tileNames[2]]->getHidden()) {
 			this->texturesSelector[this->tileNames[2]]->toggleTextureSelector();
 		}
+
+		// Save lastTileMap
+		this->lastUsedTileMaps = "prop";
 	}
 
 	// Open texture green sheet
@@ -329,6 +336,9 @@ void EditorState::updateButtons()
 		if (!this->texturesSelector[this->tileNames[1]]->getHidden()) {
 			this->texturesSelector[this->tileNames[1]]->toggleTextureSelector();
 		}
+
+		// Save lastTileMap
+		this->lastUsedTileMaps = "flora";
 	}
 	
 
