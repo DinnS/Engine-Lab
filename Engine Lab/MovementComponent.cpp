@@ -87,16 +87,28 @@ const short unsigned int MovementComponent::getLastState()
 // Functions
 
 
-void MovementComponent::stopVelocity(bool stopVelocityX, bool stopVelocityY)
+void MovementComponent::stopVelocity(bool stopLeft, bool stopRight, bool stopTop, bool stopBottom)
 {
 	/* reset the velocity to 0.*/
-	if (stopVelocityX) {
+	if (stopLeft && this->velocity.x < 0.f) {
 		this->velocity.x = 0.f;
 	}
 	
-	if (stopVelocityY) {
+	if (stopRight && this->velocity.x > 0.f) {
+		this->velocity.x = 0.f;
+	}
+
+	if (stopTop && this->velocity.y < 0.f) {
 		this->velocity.y = 0.f;
 	}
+
+	if (stopBottom && this->velocity.y > 0.f) {
+		this->velocity.y = 0.f;
+	}
+	
+	/*if (stopVelocityY) {
+		this->velocity.y = 0.f;
+	}*/
 	
 }
 

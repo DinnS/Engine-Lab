@@ -134,10 +134,10 @@ void Entity::move(const float dir_x, const float dir_y, const float& dt)
 
 }
 
-void Entity::stopVelocity(bool stopVelocityX, bool stopVelocityY)
+void Entity::stopVelocity(bool stopLeft, bool stopRight, bool stopTop, bool stopBottom)
 {
 	if (this->movementComponent) {
-		this->movementComponent->stopVelocity(stopVelocityX, stopVelocityY);
+		this->movementComponent->stopVelocity(stopLeft, stopRight, stopTop, stopBottom);
 	}
 }
 

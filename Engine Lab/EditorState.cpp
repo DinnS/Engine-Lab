@@ -137,12 +137,12 @@ void EditorState::initGui()
 void EditorState::initButtons()
 {
 	// Tool button
-	/*this->buttons["FILL"] = new gui::Button(
+	this->buttons["COLLISION"] = new gui::Button(
 		this->toolbar.getPosition().x + (this->toolbar.getGlobalBounds().width / 2.f) - (50.f / 2.f), 30.f, 50.f, 80.f,
-		&this->font, "FILL", 26,
+		&this->font, "COL", 26,
 		sf::Color(255, 255, 255, 200), sf::Color(255, 255, 255, 250), sf::Color(255, 255, 255, 50),
 		sf::Color(70, 70, 70, 200), sf::Color(150, 150, 150, 250), sf::Color(20, 20, 20, 50)
-	);*/
+	);
 
 	// Sheet button
 
@@ -314,7 +314,14 @@ void EditorState::updateButtons()
 
 	// Tool buttons
 	
-
+	if (this->buttons["COLLISION"]->isPressed() && this->getKeyTime()) {
+		if (this->collision) {
+			this->collision = false;
+		}
+		else {
+			this->collision = true;
+		}
+	}
 
 	// Open texture tile sheet
 	if (this->buttons["TERRAIN_SHEET"]->isPressed() && this->getKeyTime()) {
@@ -494,6 +501,7 @@ void EditorState::render(sf::RenderTarget* target)
 
 	for (auto& i : this->tileNames) {
 		this->tileMaps[i]->render(*target, this->mousePosGrid);
+		this->tileMaps[i]->renderDeferred(*target);
 	}
 
 	target->setView(this->window->getDefaultView());

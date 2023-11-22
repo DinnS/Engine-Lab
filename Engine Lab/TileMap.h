@@ -17,6 +17,7 @@ private:
 	sf::Vector2i numberTiles;
 	sf::Vector2f worldSize;
 	std::vector<std::vector<std::vector< std::vector<Tile*>>>> map;
+	std::stack<Tile*> defferedRenderStack;
 	std::string textureFileName;
 	sf::Texture tileTextureSheet;
 	sf::RectangleShape collisionBox;
@@ -49,7 +50,7 @@ public:
 	
 	void update();
 	void render(sf::RenderTarget& target, const sf::Vector2i& gridPosition, const bool collisionDebug = false);
-
+	void renderDeferred(sf::RenderTarget& target);
 	
 
 	

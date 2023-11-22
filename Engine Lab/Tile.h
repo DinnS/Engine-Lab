@@ -2,7 +2,8 @@
 
 enum TileTypes {
 	DEFAULT = 0,
-	DAMAGING
+	DAMAGING,
+	ONTOP
 };
 
 
@@ -28,6 +29,7 @@ public:
 	const std::string getAsString() const;
 	const sf::Vector2f& getPosition() const;
 	const sf::FloatRect getGlobalBounds() const;
+	const short& getType() const;
 
 	// Functions
 	const bool intersects(const sf::FloatRect bounds) const;

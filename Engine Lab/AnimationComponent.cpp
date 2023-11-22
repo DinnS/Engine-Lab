@@ -56,8 +56,8 @@ void AnimationComponent::changeSpritesheet(std::string animation_status)
 	if (this->animationStatus != animation_status) {
 		this->animationStatus = animation_status;	
 		this->sprite.setTexture(*this->textureSheets[this->animationStatus], false);
-		// FOR FUTURE CHANGE RECT SECOND PARAMETER FOR FIXING JUGGING
-		this->sprite.setTextureRect(sf::IntRect(0, 0, 256, 256));
+
+		//this->sprite.setTextureRect(sf::IntRect(0, 0, 256, 256));
 		this->animations[this->animationStatus][this->animation_side]->reset();
 	}
 	

@@ -231,6 +231,10 @@ void GameState::render(sf::RenderTarget* target)
 	}
 	this->player->render(this->renderTexture);
 	
+	for (auto& i : this->tileNames) {
+		this->tileMaps[i]->renderDeferred(this->renderTexture);
+	}
+
 	if (this->pause) {  // Pause menu render
 		this->renderTexture.setView(this->renderTexture.getDefaultView());
 		this->pauseMenu->render(this->renderTexture);

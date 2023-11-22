@@ -40,7 +40,7 @@ public:
 	const short unsigned int getLastState();
 
 	// Functions
-	void stopVelocity(bool stopX = true, bool stopY = true);
+	void stopVelocity(bool stopLeft = true, bool stopRight = true, bool stopTop = true, bool stopBottom = true);
 
 
 	void move(const float dir_x, const float dir_y, const float& dt);
