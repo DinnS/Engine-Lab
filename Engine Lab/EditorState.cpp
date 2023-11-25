@@ -138,8 +138,29 @@ void EditorState::initButtons()
 {
 	// Tool button
 	this->buttons["COLLISION"] = new gui::Button(
-		this->toolbar.getPosition().x + (this->toolbar.getGlobalBounds().width / 2.f) - (50.f / 2.f), 30.f, 50.f, 80.f,
+		this->toolbar.getPosition().x + (this->toolbar.getGlobalBounds().width / 2.f) - (50.f / 2.f), 30.f, 50.f, 60.f,
 		&this->font, "COL", 26,
+		sf::Color(255, 255, 255, 200), sf::Color(255, 255, 255, 250), sf::Color(255, 255, 255, 50),
+		sf::Color(70, 70, 70, 200), sf::Color(150, 150, 150, 250), sf::Color(20, 20, 20, 50)
+	);
+
+	this->buttons["DEFAULT_TILE"] = new gui::Button(
+		this->toolbar.getPosition().x + (this->toolbar.getGlobalBounds().width / 2.f) - (50.f / 2.f), 130.f, 50.f, 60.f,
+		&this->font, "DEF_T", 26,
+		sf::Color(255, 255, 255, 200), sf::Color(255, 255, 255, 250), sf::Color(255, 255, 255, 50),
+		sf::Color(70, 70, 70, 200), sf::Color(150, 150, 150, 250), sf::Color(20, 20, 20, 50)
+	);
+	
+	this->buttons["DAMAGE_TILE"] = new gui::Button(
+		this->toolbar.getPosition().x + (this->toolbar.getGlobalBounds().width / 2.f) - (50.f / 2.f), 230.f, 50.f, 60.f,
+		&this->font, "DAM_T", 26,
+		sf::Color(255, 255, 255, 200), sf::Color(255, 255, 255, 250), sf::Color(255, 255, 255, 50),
+		sf::Color(70, 70, 70, 200), sf::Color(150, 150, 150, 250), sf::Color(20, 20, 20, 50)
+	);
+
+	this->buttons["ONTOP_TILE"] = new gui::Button(
+		this->toolbar.getPosition().x + (this->toolbar.getGlobalBounds().width / 2.f) - (50.f / 2.f), 330.f, 50.f, 60.f,
+		&this->font, "TOP_T", 26,
 		sf::Color(255, 255, 255, 200), sf::Color(255, 255, 255, 250), sf::Color(255, 255, 255, 50),
 		sf::Color(70, 70, 70, 200), sf::Color(150, 150, 150, 250), sf::Color(20, 20, 20, 50)
 	);
@@ -323,6 +344,19 @@ void EditorState::updateButtons()
 		}
 	}
 
+	if (this->buttons["DEFAULT_TILE"]->isPressed() && this->getKeyTime()) {
+		this->type = 0;
+	}
+
+	if (this->buttons["DAMAGE_TILE"]->isPressed() && this->getKeyTime()) {
+		this->type = 1;
+	}
+
+	if (this->buttons["ONTOP_TILE"]->isPressed() && this->getKeyTime()) {
+		this->type = 2;
+	}
+	
+
 	// Open texture tile sheet
 	if (this->buttons["TERRAIN_SHEET"]->isPressed() && this->getKeyTime()) {
 		this->texturesSelector[this->tileNames[0]]->toggleTextureSelector();
@@ -480,7 +514,7 @@ void EditorState::renderGui(sf::RenderTarget& target)
 		this->texturesSelector[i]->render(target);
 	}
 
-	//target.draw(this->toolbar);
+	target.draw(this->toolbar);
 	target.draw(this->tileSheetBar);
 
 	target.setView(this->view);

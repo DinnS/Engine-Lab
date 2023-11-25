@@ -143,7 +143,7 @@ void TileMap::saveToFile(const std::string file_name)
 	texture file
 
 	All tiles:
-	gridPos x, y, layer 
+	gridPos x, y, layer
 	TextureRect x, y, collision, type
 	*/
 
@@ -163,7 +163,7 @@ void TileMap::saveToFile(const std::string file_name)
 					if (!this->map[x][y][z].empty()) {
 						for (int k = 0; k < this->map[x][y][z].size(); k++)
 						{
-							out_file << x << " " << y << " " << z << " " << k << this->map[x][y][z][k]->getAsString() << " ";  // CHECK !!!!!!!!
+							out_file << x << " " << y << " " << z << " " << this->map[x][y][z][k]->getAsString() << " ";  // CHECK !!!!!!!!
 						}
 						
 					}
@@ -224,6 +224,7 @@ void TileMap::loadFromFile(const std::string file_name)
 				}
 			}
 		}
+
 
 		if (!this->tileTextureSheet.loadFromFile(this->textureFileName)) {
 			std::cout << "ERROR::TILEMAP::FAILED TO LOAD TILE TEXTURE SHEET" << std::endl;
