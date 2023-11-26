@@ -3,10 +3,12 @@
 #include "HitboxComponent.h"
 #include "MovementComponent.h"
 #include "AnimationComponent.h"
+#include "AttributeComponent.h"
 
 class HitboxComponent;
 class MovementComponent;
 class AnimationComponent;
+class AttributeComponent;
 
 class Entity
 {
@@ -21,6 +23,7 @@ protected:
 	HitboxComponent* hitboxComponent;
 	MovementComponent* movementComponent;
 	AnimationComponent* animationComponent;
+	AttributeComponent* attributeComponent;
 
 	// Animation status checking
 	std::string currentAnimationStatus;
@@ -38,6 +41,7 @@ public:
 	void createHitboxComponent(sf::Sprite& sprite, float offset_x, float offset_y, float width, float height);
 	void createMovementComponent(const float movementSpeed, const float acceleration, const float deceleration);
 	void createAnimationComponent(std::map<std::string, sf::Texture*> texture_sheets);
+	void createAttributeComponent(const unsigned level);
 
 	// Accessors
 	virtual const sf::Vector2f& getPosition() const;

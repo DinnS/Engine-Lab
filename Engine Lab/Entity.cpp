@@ -6,9 +6,11 @@ void Entity::initVariables()
 	this->hitboxComponent = NULL;
 	this->movementComponent = NULL;
 	this->animationComponent = NULL;
+	this->attributeComponent = NULL;
 
 	this->currentAnimationStatus = "";
 	this->newAnimationStatus = "";
+
 }
 
 Entity::Entity()
@@ -22,6 +24,7 @@ Entity::~Entity()
 	delete this->hitboxComponent;
 	delete this->movementComponent;
 	delete this->animationComponent;
+	delete this->attributeComponent;
 }
 
 
@@ -52,10 +55,17 @@ void Entity::createAnimationComponent(std::map<std::string, sf::Texture*> textur
 	this->animationComponent = new AnimationComponent(this->sprite, texture_sheets);
 }
 
+void Entity::createAttributeComponent(const unsigned level)
+{
+	this->attributeComponent = new AttributeComponent(level);
+}
+
 
 
 
 // Accessors
+
+
 const sf::Vector2f& Entity::getPosition() const
 {
 	if (this->hitboxComponent) {
