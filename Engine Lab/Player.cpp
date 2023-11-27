@@ -25,7 +25,7 @@ Player::Player(float x,float y, std::map<std::string, sf::Texture*> texture_shee
 	this->createHitboxComponent(this->sprite, 90.f, 100.f, 80.f, 100.f);
 	this->createMovementComponent(500.f, 1000.f, 600.f);
 	this->createAnimationComponent(texture_sheets);
-	this->createAttributeComponent(0);
+	this->createAttributeComponent(1);
 
 	this->animationComponent->addAnimation("IDLE", "LEFT", 10.f, 0, 0, 5, 0, 256, 256);
 	this->animationComponent->addAnimation("IDLE", "RIGHT", 10.f, 0, 1, 5, 1, 256, 256);
@@ -48,6 +48,13 @@ Player::Player(float x,float y, std::map<std::string, sf::Texture*> texture_shee
 Player::~Player()
 {
 
+}
+
+
+// Accessors
+AttributeComponent* Player::getAttributeComponent()
+{
+	return this->attributeComponent;
 }
 
 

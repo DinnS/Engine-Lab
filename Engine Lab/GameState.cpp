@@ -98,6 +98,11 @@ void GameState::initPlayers()
 	
 }
 
+void GameState::initPlayerGUI()
+{
+	this->playerGUI = new PlayerGUI(this->player);
+}
+
 void GameState::initTileMap()
 {
 	this->tileNames = {"terrain", "prop", "flora" };
@@ -122,12 +127,14 @@ GameState::GameState(StateData* state_data)
 	this->initPauseMenu();
 
 	this->initPlayers();
+	this->initPlayerGUI();
 	this->initTileMap();
 }
 
 GameState::~GameState() {
 	delete this->pauseMenu;
 	delete this->player;
+	delete this->playerGUI;
 
 	for (auto& i : this->tileMaps) {
 		delete i.second;
@@ -176,6 +183,11 @@ void GameState::updatePlayerInput(const float& dt)
 
 }
 
+void GameState::updatePlayerGUI(const float& dt)
+{
+	this->playerGUI->update(dt);
+}
+
 void GameState::updatePauseMenuButtons()
 {
 	if (this->pauseMenu->isButtonPressed("QUIT")) {
@@ -206,6 +218,8 @@ void GameState::update(const float& dt)
 		this->updateTileMap(dt);
 
 		this->player->update(dt);
+
+		this->updatePlayerGUI(dt);
 		
 	}
 	else {              // Pause update
@@ -230,19 +244,25 @@ void GameState::render(sf::RenderTarget* target)
 		this->tileMaps[i]->render(this->renderTexture, this->player->getGridPosition(static_cast<int>(this->stateData->gridSize)));
 	}
 	this->player->render(this->renderTexture);
-	
+
 	for (auto& i : this->tileNames) {
 		this->tileMaps[i]->renderDeferred(this->renderTexture);
 	}
+	
+
+	// Render GUI
+	this->renderTexture.setView(this->renderTexture.getDefaultView());
+	this->playerGUI->render(this->renderTexture);
+	
 
 	if (this->pause) {  // Pause menu render
-		this->renderTexture.setView(this->renderTexture.getDefaultView());
+		//this->renderTexture.setView(this->renderTexture.getDefaultView());
 		this->pauseMenu->render(this->renderTexture);
 	}
 
 	// FINAL RENDER
 	this->renderTexture.display();
-	this->renderSprite.setTexture(this->renderTexture.getTexture());
+	//this->renderSprite.setTexture(this->renderTexture.getTexture());
 	target->draw(this->renderSprite);
 }
 	

@@ -2,6 +2,9 @@
 class AttributeComponent
 {
 private:
+
+
+public:
 	// Leveling 
 	unsigned level;
 	unsigned exp;
@@ -15,7 +18,7 @@ private:
 
 	int vitality;
 	int dexterity;
-	
+
 	// Stats
 	int health;
 	int healthMax;
@@ -26,8 +29,8 @@ private:
 	int defence;
 	int luck;
 
-public:
-	// Initializer functions 
+
+	// Constructor / Destructor
 	AttributeComponent(unsigned level);
 	virtual ~AttributeComponent();
 

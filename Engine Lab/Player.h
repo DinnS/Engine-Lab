@@ -14,8 +14,12 @@ private:
     void initComponents();
 
 public:
+    // Constructor / Destructor
     Player(float x, float y, std::map<std::string, sf::Texture*> texture_sheets);
     virtual ~Player();
+
+    // Accessors
+    AttributeComponent* getAttributeComponent();
 
     // Functions
     void updateAttack();
