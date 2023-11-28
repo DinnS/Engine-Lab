@@ -181,11 +181,14 @@ void GameState::updatePlayerInput(const float& dt)
 	}
 
 
+
+
 }
 
 void GameState::updatePlayerGUI(const float& dt)
 {
 	this->playerGUI->update(dt);
+
 }
 
 void GameState::updatePauseMenuButtons()

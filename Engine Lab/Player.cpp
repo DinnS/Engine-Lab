@@ -59,8 +59,40 @@ AttributeComponent* Player::getAttributeComponent()
 
 
 
-
 // Functions
+
+void Player::gainHealth(const int health)
+{
+	this->attributeComponent->health += health;
+
+	if (this->attributeComponent->health > this->attributeComponent->healthMax) 
+		this->attributeComponent->health = this->attributeComponent->healthMax;
+	
+}
+
+void Player::loseHealth(const int health)
+{
+	this->attributeComponent->health -= health;
+
+	if (this->attributeComponent->health < 0) 
+		this->attributeComponent->health = 0;
+	
+}
+
+void Player::gainEXP(const unsigned exp)
+{
+	this->attributeComponent->gainExp(exp);
+}
+
+void Player::loseEXP(const unsigned exp)
+{
+	this->attributeComponent->exp -= exp;
+
+	if (this->attributeComponent->exp < 0)
+		this->attributeComponent->exp = 0;
+
+}
+
 
 void Player::updateAttack()
 {

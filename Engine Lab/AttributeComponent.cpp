@@ -11,12 +11,12 @@ AttributeComponent::AttributeComponent(unsigned level)
 	this->attributePoints = 2;
 
 	// Attributes
-	int strength = 1;
-	int agility = 1;
-	int intelligence = 1;
+	this->strength = 1;
+	this->agility = 1;
+	this->intelligence = 1;
 
-	int vitality = 1;
-	int dexterity = 1;
+	this->vitality = 1;
+	this->dexterity = 1;
 
 	this->updateLevel();
 	this->updateStats(true);

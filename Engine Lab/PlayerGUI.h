@@ -12,8 +12,15 @@ private:
 
 	sf::Font font;
 
+	// Health Bar
+	std::string healthBarString;
+	sf::Text healthBarText;
+	float healthBarMaxWidth;
+	float healthBarMaxHeight;
 	sf::RectangleShape healthBarBack;
 	sf::RectangleShape healthBarInner;
+
+	// EXP Bar
 
 	// Functions
 	

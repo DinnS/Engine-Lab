@@ -22,6 +22,13 @@ public:
     AttributeComponent* getAttributeComponent();
 
     // Functions
+    void gainHealth(const int health);
+    void loseHealth(const int health);
+
+    void gainEXP(const unsigned exp);
+    void loseEXP(const unsigned exp);
+   
+
     void updateAttack();
     void updateAnimation(const float& dt);
     void update(const float& dt);
