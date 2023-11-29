@@ -25,8 +25,8 @@ public:
     void gainHealth(const int health);
     void loseHealth(const int health);
 
-    void gainEXP(const unsigned exp);
-    void loseEXP(const unsigned exp);
+    void gainEXP(const int exp);
+    void loseEXP(const int exp);
    
 
     void updateAttack();

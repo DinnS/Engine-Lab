@@ -6,10 +6,10 @@ private:
 
 public:
 	// Leveling 
-	unsigned level;
-	unsigned exp;
-	unsigned expNext;
-	unsigned attributePoints;
+	int level;
+	int exp;
+	int expNext;
+	int attributePoints;
 
 	// Attributes
 	int strength;
@@ -31,7 +31,7 @@ public:
 
 
 	// Constructor / Destructor
-	AttributeComponent(unsigned level);
+	AttributeComponent(int level);
 	virtual ~AttributeComponent();
 
 
@@ -41,7 +41,7 @@ public:
 	// Functions
 	std::string debugPrint() const;
 
-	void gainExp(const unsigned exp);
+	void gainExp(const int exp);
 
 	void updateLevel();
 	void updateStats(const bool reset);

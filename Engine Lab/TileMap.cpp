@@ -8,7 +8,7 @@ void TileMap::clear()
 
 		for (int y = 0; y < this->numberTiles.y; y++) {
 			for (int z = 0; z < this->layers; z++) {
-				for (int k = 0; k < this->map[x][y][z].size(); k++) {
+				for (int k = 0; k < static_cast<int>(this->map[x][y][z].size()); k++) {
 					delete this->map[x][y][z][k];
 					this->map[x][y][z][k] = nullptr;
 				}
@@ -87,10 +87,10 @@ const sf::Texture* TileMap::getTileTextureSheet() const
 
 const int TileMap::getLayerSize(const int x, const int y, const int layer) const
 {
-	if (x >= 0 && x < this->map.size()) {
-		if (y >= 0 && y < this->map[x].size()) {
-			if (layer >= 0 && layer < this->map[x][y].size()) {
-				return this->map[x][y][layer].size();
+	if (x >= 0 && x < static_cast<int>(this->map.size())) {
+		if (y >= 0 && y < static_cast<int>(this->map[x].size())) {
+			if (layer >= 0 && layer < static_cast<int>(this->map[x][y].size())) {
+				return static_cast<int>(this->map[x][y][layer].size());
 			}
 		}
 	}
@@ -161,7 +161,7 @@ void TileMap::saveToFile(const std::string file_name)
 			for (int y = 0; y < this->numberTiles.y; y++) {
 				for (int z = 0; z < this->layers; z++) {
 					if (!this->map[x][y][z].empty()) {
-						for (int k = 0; k < this->map[x][y][z].size(); k++)
+						for (int k = 0; k < static_cast<int>(this->map[x][y][z].size()); k++)
 						{
 							out_file << x << " " << y << " " << z << " " << this->map[x][y][z][k]->getAsString() << " ";  // CHECK !!!!!!!!
 						}
@@ -310,7 +310,7 @@ void TileMap::updateCollision(Entity* entity, const float& dt)
 
 		for (int y = this->fromY; y < this->toY; y++) {
 
-			for (int k = 0; k < this->map[x][y][this->layer].size(); k++)
+			for (int k = 0; k < static_cast<int>(this->map[x][y][this->layer].size()); k++)
 			{
 
 				sf::FloatRect playerBounds = entity->getGlobalBounds();
@@ -412,7 +412,7 @@ void TileMap::render(sf::RenderTarget& target, const sf::Vector2i& gridPosition,
 		for (int x = this->fromX; x < this->toX; x++) {
 
 			for (int y = this->fromY; y < this->toY; y++) {
-				for (int k = 0; k < this->map[x][y][this->layer].size(); k++)
+				for (int k = 0; k < static_cast<int>(this->map[x][y][this->layer].size()); k++)
 				{
 					if (this->map[x][y][this->layer][k]->getType() == TileTypes::ONTOP) {
 						this->defferedRenderStack.push(this->map[x][y][this->layer][k]);

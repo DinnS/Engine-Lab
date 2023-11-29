@@ -267,10 +267,9 @@ gui::TextureSelector::TextureSelector(float x, float y, float width, float heigh
 	// Hide or show textureSelector
 	this->hidden = true;
 
-
 	this->gridSize = gridSize;
-	
 
+	
 	// Bounds settings
 	this->bounds.setSize(sf::Vector2f(width, height));
 	this->bounds.setPosition(x, y);

@@ -79,12 +79,12 @@ void Player::loseHealth(const int health)
 	
 }
 
-void Player::gainEXP(const unsigned exp)
+void Player::gainEXP(const int exp)
 {
 	this->attributeComponent->gainExp(exp);
 }
 
-void Player::loseEXP(const unsigned exp)
+void Player::loseEXP(const int exp)
 {
 	this->attributeComponent->exp -= exp;
 

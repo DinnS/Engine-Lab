@@ -175,9 +175,13 @@ void GameState::updatePlayerInput(const float& dt)
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_UP")))) {
 		this->player->move(0.f, -1.f, dt);
+		if(this->getKeyTime())
+			this->player->gainEXP(10);
 	}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key(this->keybinds.at("MOVE_DOWN")))) {
 		this->player->move(0.f, 1.f, dt);
+		if (this->getKeyTime())
+			this->player->loseEXP(10);
 	}
 
 
