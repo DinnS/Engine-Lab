@@ -86,9 +86,16 @@ void GameState::initTextures()
 
 void GameState::initPauseMenu()
 {
-	this->pauseMenu = new PauseMenu(*this->window, this->font);
+	const sf::VideoMode& videoMode = this->stateData->gfxSettings->resolution;
 
-	this->pauseMenu->addButton("QUIT", 700.f, "Quit");
+	this->pauseMenu = new PauseMenu(this->stateData->gfxSettings->resolution, this->font);
+
+	this->pauseMenu->addButton(
+		"QUIT", gui::percentToPixelY(75.f, videoMode),
+		gui::percentToPixelX(13.f, videoMode), gui::percentToPixelY(6.f, videoMode), 
+		gui::calcCharSize(50, videoMode),
+		"Quit"
+	);
 }
 	
 

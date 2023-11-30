@@ -8,21 +8,6 @@ void SettingsState::initVariables()
 	this->modes = sf::VideoMode::getFullscreenModes();
 }
 
-void SettingsState::initBackground()
-{
-	this->background.setSize(
-		sf::Vector2f(
-			static_cast<float>(this->window->getSize().x),
-			static_cast<float>(this->window->getSize().y)
-		)
-	);
-
-	if (!this->backgroundTexture.loadFromFile("Resources/Graphics/MainMenu/background.png")) {
-		throw "ERROR::MAIN_MENU_STATE::FAILED_TO_LOAD_BACKGROUND_TEXTURE";
-	}
-
-	this->background.setTexture(&this->backgroundTexture);
-}
 
 void SettingsState::initFonts()
 {
@@ -51,47 +36,86 @@ void SettingsState::initKeybinds()
 
 void SettingsState::initGui()
 {
+	const sf::VideoMode& videoMode = this->stateData->gfxSettings->resolution;
+
+	// Background
+	this->background.setSize(
+		sf::Vector2f(
+			static_cast<float>(videoMode.width),
+			static_cast<float>(videoMode.height)
+		)
+	);
+
+	if (!this->backgroundTexture.loadFromFile("Resources/Graphics/MainMenu/background.png")) {
+		throw "ERROR::MAIN_MENU_STATE::FAILED_TO_LOAD_BACKGROUND_TEXTURE";
+	}
+
+	this->background.setTexture(&this->backgroundTexture);
+
+	// Modes
 	std::vector<std::string> modes_str;
 	for (auto& i : this->modes) {
 		modes_str.push_back(std::to_string(i.width) + 'x' + std::to_string(i.height));
 	}
 
-
-	this->dropDownLists["RESOLUTION"] = new gui::DropDownList(
-		1000.f, 200.f, 250.f, 100.f,
-		this->font, modes_str.data(),
-		modes_str.size()
-	);
-
-
-
+	// Buttons
 	this->buttons["APPLY"] = new gui::Button(
-		185.f, 800.f, 250.f, 70.f,
-		&this->font, "Apply", 50,
+		gui::percentToPixelX(10.f, videoMode), gui::percentToPixelY(75.f, videoMode),
+		gui::percentToPixelX(13.f, videoMode), gui::percentToPixelY(6.f, videoMode),
+		&this->font, "Apply", gui::calcCharSize(60, videoMode),
 		sf::Color(70, 70, 70, 200), sf::Color(250, 250, 250, 250), sf::Color(20, 20, 20, 50),
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0)
 	);
 
 	this->buttons["BACK"] = new gui::Button(
-		600.f, 800.f, 250.f, 70.f,
-		&this->font, "Back", 50,
+		gui::percentToPixelX(30.f, videoMode), gui::percentToPixelY(75.f, videoMode),
+		gui::percentToPixelX(13.f, videoMode), gui::percentToPixelY(6.f, videoMode),
+		&this->font, "Back", gui::calcCharSize(60, videoMode),
 		sf::Color(70, 70, 70, 200), sf::Color(250, 250, 250, 250), sf::Color(20, 20, 20, 50),
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0)
 	);
 
+	// Drop down lists
+	
+	this->dropDownLists["RESOLUTION"] = new gui::DropDownList(
+		gui::percentToPixelX(52.f, videoMode), gui::percentToPixelY(18.f, videoMode),
+		gui::percentToPixelX(13.f, videoMode), gui::percentToPixelY(5.f, videoMode),
+		this->font, modes_str.data(),
+		modes_str.size()
+	);
 
-}
 
-void SettingsState::initText()
-{
 	this->optionsText.setFont(this->font);
-	this->optionsText.setPosition(sf::Vector2f(185.f, 220.f));
-	this->optionsText.setCharacterSize(30);
+	this->optionsText.setPosition(sf::Vector2f(gui::percentToPixelX(9.f, videoMode), gui::percentToPixelY(20.f, videoMode)));
+	this->optionsText.setCharacterSize(gui::calcCharSize(60, videoMode));
 	this->optionsText.setFillColor(sf::Color(255, 255, 255, 200));
 
 	this->optionsText.setString(
-		"Resolution \n\n\nFullscreen \n\n\nnVsync \n\n\nAntialiazing \n\n\n" 
+		"Resolution \n\n\nFullscreen \n\n\nnVsync \n\n\nAntialiazing \n\n\n"
 	);
+}
+
+void SettingsState::resetGui()
+{
+	/*
+	*  Clear GUI elements and re-initializes the GUI
+	*
+	*  @return		void
+	*/
+	
+	auto i = this->buttons.begin();
+	for (i = this->buttons.begin(); i != this->buttons.end(); ++i) {
+		delete i->second;
+	}
+	this->buttons.clear();
+	
+	auto i2 = this->dropDownLists.begin();
+	for (i2 = this->dropDownLists.begin(); i2 != this->dropDownLists.end(); ++i2) {
+		delete i2->second;
+	}
+	this->dropDownLists.clear();
+
+	this->initGui();
 }
 
 // Constructors/Destructors
@@ -99,11 +123,9 @@ SettingsState::SettingsState(StateData* state_data)
 	: State(state_data)
 {
 	this->initVariables();
-	this->initBackground();
 	this->initFonts();
 	this->initKeybinds();
 	this->initGui();
-	this->initText();
 }
 
 SettingsState::~SettingsState()
@@ -151,6 +173,8 @@ void SettingsState::updateGui(const float& dt)
 		// REMOVE!!!!!!!!!!!!!!!!!!!!
 		this->stateData->gfxSettings->resolution = this->modes[this->dropDownLists["RESOLUTION"]->getActiveElementId()];
 		this->window->create(this->stateData->gfxSettings->resolution, this->stateData->gfxSettings->title, sf::Style::Default);
+
+		this->resetGui();
 	}
 	
 	// Back to the menu

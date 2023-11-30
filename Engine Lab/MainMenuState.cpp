@@ -49,35 +49,54 @@ void MainMenuState::initKeybinds()
 
 }
 
-void MainMenuState::initButtons()
+void MainMenuState::initGui()
 {
+	const sf::VideoMode& videoMode = this->stateData->gfxSettings->resolution;
+
 	this->buttons["GAME_STATE"] = new gui::Button(
-		185.f, 250.f, 250.f, 70.f,
-		&this->font, "New Game", 50,
+		gui::percentToPixelX(10.f, videoMode), gui::percentToPixelY(30.f, videoMode),
+		gui::percentToPixelX(13.f, videoMode), gui::percentToPixelY(6.f, videoMode),
+		&this->font, "New Game", gui::calcCharSize(60, videoMode),
 		sf::Color(70, 70, 70, 200), sf::Color(250, 250, 250, 250), sf::Color(20, 20, 20, 50), 
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0)
 	); 
 
 	this->buttons["SETTINGS_STATE"] = new gui::Button(
-		185.f, 400.f, 250.f, 70.f,
-		&this->font, "Settings", 50,
+		gui::percentToPixelX(10.f, videoMode), gui::percentToPixelY(43.f, videoMode),
+		gui::percentToPixelX(13.f, videoMode), gui::percentToPixelY(6.f, videoMode),
+		&this->font, "Settings", gui::calcCharSize(60, videoMode),
 		sf::Color(70, 70, 70, 200), sf::Color(250, 250, 250, 250), sf::Color(20, 20, 20, 50),
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0)
 	);
 
 	this->buttons["EDITOR_STATE"] = new gui::Button(
-		185.f, 550.f, 250.f, 70.f, 
-		&this->font, "Editor", 50,
+		gui::percentToPixelX(10.f, videoMode), gui::percentToPixelY(56.f, videoMode),
+		gui::percentToPixelX(13.f, videoMode), gui::percentToPixelY(6.f, videoMode),
+		&this->font, "Editor", gui::calcCharSize(60, videoMode),
 		sf::Color(70, 70, 70, 200), sf::Color(250, 250, 250, 250), sf::Color(20, 20, 20, 50),
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0)
 	);
 
 	this->buttons["EXIT_STATE"] = new gui::Button(
-		185.f, 800.f, 250.f, 70.f,
-		&this->font, "Quit", 50,
+		gui::percentToPixelX(10.f, videoMode), gui::percentToPixelY(75.f, videoMode),
+		gui::percentToPixelX(13.f, videoMode), gui::percentToPixelY(6.f, videoMode),
+		&this->font, "Quit", gui::calcCharSize(60, videoMode),
 		sf::Color(70, 70, 70, 200), sf::Color(250, 250, 250, 250), sf::Color(20, 20, 20, 50),
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0)
 	);
+}
+
+void MainMenuState::resetGui()
+{
+	/*
+	*  Clear GUI elements and re-initializes the GUI
+	*
+	*  @return		void
+	*/
+
+
+	this->buttons.clear();
+	this->initGui();
 }
 
 // Constructors/Destructors
@@ -88,8 +107,8 @@ MainMenuState::MainMenuState(StateData* state_data)
 	this->initBackground();
 	this->initFonts();
 	this->initKeybinds();
-	this->initButtons();
-
+	this->initGui();
+	this->resetGui();
 }
 
 MainMenuState::~MainMenuState() {

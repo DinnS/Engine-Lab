@@ -1,5 +1,53 @@
-#include "stdafx.h"
+	#include "stdafx.h"
 #include "Gui.h"
+
+// Function
+const float gui::percentToPixelX(const float percent, const sf::VideoMode& videoMode)
+{
+	/*
+	*  Converts a percentage value to pixels relative to the current resolution in the x-axis.
+	*
+	*  @param		float percent				The percentage value.
+	*  @param		sf::VideoMode& videoMode	The current VideoMode for a window (resolution)
+	*
+	*  @return		float						The calculated pixel value
+	*
+	*/
+
+	return std::floor(static_cast<float>(videoMode.width) * (percent / 100.f));
+}
+
+const float gui::percentToPixelY(const float percent, const sf::VideoMode& videoMode)
+{
+	/*
+	*  Converts a percentage value to pixels relative to the current resolution in the y-axis.
+	*
+	*  @param		float percent				The percentage value.
+	*  @param		sf::VideoMode& videoMode	The current VideoMode for a window (resolution)
+	*
+	*  @return		float						The calculated pixel value
+	*
+	*/
+
+
+	return std::floor(static_cast<float>(videoMode.height) * (percent / 100.f));
+}
+
+
+const unsigned gui::calcCharSize(const unsigned modifier, const sf::VideoMode& videoMode)
+{
+	/*
+	*  Calculate the character size for text using the current resolution and a constant
+	*
+	*  @param		int							The value which we divide for getting dynamic size
+	*  @param		unsigned modifier			Used to modify the character size
+	*
+	*  @return		unsigned					The calculated character size value
+	*
+	*/
+
+	return static_cast<unsigned>(videoMode.width + videoMode.height) / (modifier);
+}
 
 // BUTTON =======================================================================
 

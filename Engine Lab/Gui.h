@@ -10,6 +10,12 @@ enum button_states {
 
 namespace gui {
 
+	// Function
+
+	const float percentToPixelX(const float percent, const sf::VideoMode& videoMode);
+	const float percentToPixelY(const float percent, const sf::VideoMode& videoMode);
+	const unsigned calcCharSize(const unsigned modifier, const sf::VideoMode& videoMode);
+
 	// BUTTON =======================================================================
 
 	class Button
