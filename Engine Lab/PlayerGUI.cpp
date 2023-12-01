@@ -10,11 +10,11 @@ void PlayerGUI::initFont()
 
 void PlayerGUI::initHealthBar()
 {
-	this->healthBarWidth = 300.f;
-	this->healthBarHeight = 30.f;
+	this->healthBarWidth = gui::percentToPixelX(15.f, this->videoMode);
+	this->healthBarHeight = gui::percentToPixelY(3.f, this->videoMode);
 
-	this->healthBarPositionX = 20.f;
-	this->healthBarPositionY = 20.f;
+	this->healthBarPositionX = gui::percentToPixelX(1.f, this->videoMode);
+	this->healthBarPositionY = gui::percentToPixelX(1.5f, this->videoMode);
 	
 	this->healthBarBack.setSize(sf::Vector2f(this->healthBarWidth, this->healthBarHeight));
 	this->healthBarBack.setFillColor(sf::Color(50,50,50, 200));
@@ -25,21 +25,21 @@ void PlayerGUI::initHealthBar()
 	this->healthBarInner.setPosition(this->healthBarBack.getPosition());
 
 	this->healthBarText.setFont(this->font);
-	this->healthBarText.setCharacterSize(25);
+	this->healthBarText.setCharacterSize(gui::calcCharSize(100, this->videoMode));
 	
 	this->healthBarText.setPosition(
-		this->healthBarBack.getPosition().x + (this->healthBarBack.getGlobalBounds().width / 2.f) - 20.f,
-		this->healthBarBack.getPosition().y - 2.f
+		this->healthBarBack.getPosition().x + (this->healthBarBack.getGlobalBounds().width / 2.f) - gui::percentToPixelX(0.1f, this->videoMode),
+		this->healthBarBack.getPosition().y - gui::percentToPixelY(0.2f, this->videoMode)
 	);
 }
 
 void PlayerGUI::initExpBar()
 {
-	this->expBarWidth = 300.f;
-	this->expBarHeight = 30.f;
+	this->expBarWidth = gui::percentToPixelX(15.f, this->videoMode);
+	this->expBarHeight = gui::percentToPixelY(3.f, this->videoMode);
 
-	this->expBarPositionX = 20.f;
-	this->expBarPositionY = (this->healthBarPositionY + this->healthBarHeight) + 10.f;
+	this->expBarPositionX = gui::percentToPixelX(1.f, this->videoMode);
+	this->expBarPositionY = gui::percentToPixelY(8.f, this->videoMode);;
 	
 	this->expBarBack.setSize(sf::Vector2f(this->expBarWidth, this->expBarHeight));
 	this->expBarBack.setFillColor(sf::Color(50, 50, 50, 200));
@@ -51,34 +51,38 @@ void PlayerGUI::initExpBar()
 
 
 	this->expBarText.setFont(this->font);
-	this->expBarText.setCharacterSize(25);
+	this->expBarText.setCharacterSize(gui::calcCharSize(100, this->videoMode));
 	
 	this->expBarText.setPosition(
-		this->expBarBack.getPosition().x + (this->expBarBack.getGlobalBounds().width / 2.f) - 25.f,
-		this->expBarBack.getPosition().y - 2.f
+		this->expBarBack.getPosition().x + (this->expBarBack.getGlobalBounds().width / 2.f) - gui::percentToPixelX(0.1f, this->videoMode),
+		this->expBarBack.getPosition().y - gui::percentToPixelY(0.2f, this->videoMode)
 	);
 }
 
 void PlayerGUI::initLevelBar()
 {
-	this->levelBarPositionX = 20.f;
-	this->levelBarPositionY = (this->expBarPositionY + this->expBarHeight) + 10.f;
+	this->levelBarWidth = gui::percentToPixelX(2.f, this->videoMode);
+	this->levelBarHeight = gui::percentToPixelY(3.f, this->videoMode);
 
-	this->levelBarBack.setSize(sf::Vector2f(40, 40));
+	this->levelBarPositionX = gui::percentToPixelX(1.f, this->videoMode);
+	this->levelBarPositionY = gui::percentToPixelY(13.f, this->videoMode);
+
+	this->levelBarBack.setSize(sf::Vector2f(this->levelBarWidth, this->levelBarHeight));
 	this->levelBarBack.setFillColor(sf::Color(50, 50, 50, 200));
 	this->levelBarBack.setPosition(this->levelBarPositionX, this->levelBarPositionY);
 
 	this->levelBarText.setFont(this->font);
-	this->levelBarText.setCharacterSize(25);
+	this->levelBarText.setCharacterSize(gui::calcCharSize(100, this->videoMode));
 
 	this->levelBarText.setPosition(
-		this->levelBarBack.getPosition().x + (this->levelBarBack.getGlobalBounds().width / 2.f) - 5.f,
-		this->levelBarBack.getPosition().y - 2.f
+		this->levelBarBack.getPosition().x + (this->levelBarBack.getGlobalBounds().width / 2.f) - gui::percentToPixelX(0.1f, this->videoMode),
+		this->levelBarBack.getPosition().y - gui::percentToPixelY(0.2f, this->videoMode)
 	);
 }
 
 // Constructor / Destructor	
-PlayerGUI::PlayerGUI(Player* player)
+PlayerGUI::PlayerGUI(Player* player, sf::VideoMode& videoMode)
+	: videoMode(videoMode)
 {
 	this->player = player;
 

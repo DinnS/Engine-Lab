@@ -107,7 +107,7 @@ void GameState::initPlayers()
 
 void GameState::initPlayerGUI()
 {
-	this->playerGUI = new PlayerGUI(this->player);
+	this->playerGUI = new PlayerGUI(this->player, this->stateData->gfxSettings->resolution);
 }
 
 void GameState::initTileMap()
@@ -153,7 +153,17 @@ GameState::~GameState() {
 
 void GameState::updateView(const float& dt)
 {
-	this->view.setCenter(std::floor(this->player->getPosition().x + (this->player->getHitboxComponentWidth() / 2)), std::floor(this->player->getPosition().y + (this->player->getHitboxComponentHeight() / 2)));
+	// Default camera view
+	/*this->view.setCenter(
+		std::floor(this->player->getPosition().x + (this->player->getHitboxComponentWidth() / 2)),
+		std::floor(this->player->getPosition().y + (this->player->getHitboxComponentHeight() / 2))
+	);*/
+
+	// Dynamic camera view
+	this->view.setCenter(
+		std::floor(this->player->getPosition().x + (static_cast<float>(this->mousePosWindow.x) - static_cast<float>(this->stateData->gfxSettings->resolution.width / 2)) / 6.f),
+		std::floor(this->player->getPosition().y + (static_cast<float>(this->mousePosWindow.y) - static_cast<float>(this->stateData->gfxSettings->resolution.height / 2)) / 6.f)
+	);
 }
 
 

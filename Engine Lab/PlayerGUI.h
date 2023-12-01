@@ -1,7 +1,9 @@
 #pragma once
 
 #include "Player.h"
+#include "Gui.h"
 
+class Gui;
 class Player;
 class sf::RectangleShape;
 
@@ -10,6 +12,7 @@ class PlayerGUI
 private:
 	Player* player;
 
+	sf::VideoMode& videoMode;
 	sf::Font font;
 
 	// Health Bar
@@ -37,6 +40,8 @@ private:
 	// Level Bar
 	std::string levelBarString;
 	sf::Text levelBarText;
+	float levelBarWidth;
+	float levelBarHeight;
 	float levelBarPositionX;
 	float levelBarPositionY;
 
@@ -53,7 +58,7 @@ private:
 
 public:
 	// Constructor / Destructor
-	PlayerGUI(Player* player);
+	PlayerGUI(Player* player, sf::VideoMode& videoMode);
 	virtual ~PlayerGUI();
 
 	// Functions

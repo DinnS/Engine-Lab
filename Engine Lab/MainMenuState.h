@@ -19,12 +19,12 @@ private:
 	sf::RectangleShape background;
 	sf::Font font;
 
+	sf::RectangleShape buttonBackground;
 	std::map<std::string, gui::Button*> buttons;
 
 
 	// Initializer functions
 	void initVariables();
-	void initBackground();
 	void initFonts();
 	void initKeybinds();
 	void initGui();

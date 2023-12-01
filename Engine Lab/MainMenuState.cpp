@@ -7,23 +7,6 @@ void MainMenuState::initVariables()
 {
 }
 
-void MainMenuState::initBackground()
-{
-	this->background.setSize(
-		sf::Vector2f(
-			static_cast<float>(this->window->getSize().x),
-			static_cast<float>(this->window->getSize().y)
-		)
-	);
-
-
-	if (!this->backgroundTexture.loadFromFile("Resources/Graphics/MainMenu/background.png")) {
-		throw "ERROR::MAIN_MENU_STATE::FAILED_TO_LOAD_BACKGROUND_TEXTURE";
-	}
-
-	this->background.setTexture(&this->backgroundTexture);
-}
-
 void MainMenuState::initFonts()
 {
 	if (!this->font.loadFromFile("Fonts/EBGaramond-Medium.ttf")) {
@@ -53,11 +36,38 @@ void MainMenuState::initGui()
 {
 	const sf::VideoMode& videoMode = this->stateData->gfxSettings->resolution;
 
+	// Background
+	this->background.setSize(
+		sf::Vector2f(
+			static_cast<float>(videoMode.width),
+			static_cast<float>(videoMode.height)
+		)
+	);
+
+
+	if (!this->backgroundTexture.loadFromFile("Resources/Graphics/MainMenu/background.png")) {
+		throw "ERROR::MAIN_MENU_STATE::FAILED_TO_LOAD_BACKGROUND_TEXTURE";
+	}
+
+	this->background.setTexture(&this->backgroundTexture);
+
+	// Button background
+	this->buttonBackground.setSize(
+		sf::Vector2f(
+			static_cast<float>(videoMode.width / 5),
+			static_cast<float>(videoMode.height)
+		)
+	);
+
+	this->buttonBackground.setPosition(gui::percentToPixelX(6.5f, videoMode), 0.f);
+	this->buttonBackground.setFillColor(sf::Color(10, 10, 10, 220));
+
+	// Buttons
 	this->buttons["GAME_STATE"] = new gui::Button(
 		gui::percentToPixelX(10.f, videoMode), gui::percentToPixelY(30.f, videoMode),
 		gui::percentToPixelX(13.f, videoMode), gui::percentToPixelY(6.f, videoMode),
 		&this->font, "New Game", gui::calcCharSize(60, videoMode),
-		sf::Color(70, 70, 70, 200), sf::Color(250, 250, 250, 250), sf::Color(20, 20, 20, 50), 
+		sf::Color(200, 200, 200, 200), sf::Color(255, 255, 255, 255), sf::Color(20, 20, 20, 50),
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0)
 	); 
 
@@ -65,7 +75,7 @@ void MainMenuState::initGui()
 		gui::percentToPixelX(10.f, videoMode), gui::percentToPixelY(43.f, videoMode),
 		gui::percentToPixelX(13.f, videoMode), gui::percentToPixelY(6.f, videoMode),
 		&this->font, "Settings", gui::calcCharSize(60, videoMode),
-		sf::Color(70, 70, 70, 200), sf::Color(250, 250, 250, 250), sf::Color(20, 20, 20, 50),
+		sf::Color(200, 200, 200, 200), sf::Color(255, 255, 255, 255), sf::Color(20, 20, 20, 50),
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0)
 	);
 
@@ -73,7 +83,7 @@ void MainMenuState::initGui()
 		gui::percentToPixelX(10.f, videoMode), gui::percentToPixelY(56.f, videoMode),
 		gui::percentToPixelX(13.f, videoMode), gui::percentToPixelY(6.f, videoMode),
 		&this->font, "Editor", gui::calcCharSize(60, videoMode),
-		sf::Color(70, 70, 70, 200), sf::Color(250, 250, 250, 250), sf::Color(20, 20, 20, 50),
+		sf::Color(200, 200, 200, 200), sf::Color(255, 255, 255, 255), sf::Color(20, 20, 20, 50),
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0)
 	);
 
@@ -81,8 +91,8 @@ void MainMenuState::initGui()
 		gui::percentToPixelX(10.f, videoMode), gui::percentToPixelY(75.f, videoMode),
 		gui::percentToPixelX(13.f, videoMode), gui::percentToPixelY(6.f, videoMode),
 		&this->font, "Quit", gui::calcCharSize(60, videoMode),
-		sf::Color(70, 70, 70, 200), sf::Color(250, 250, 250, 250), sf::Color(20, 20, 20, 50),
-		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0)
+		sf::Color(200, 200, 200, 200), sf::Color(250, 250, 250, 250), sf::Color(20, 20, 20, 50),
+		sf::Color(100, 100, 100, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0)
 	);
 }
 
@@ -94,8 +104,11 @@ void MainMenuState::resetGui()
 	*  @return		void
 	*/
 
+	auto i = this->buttons.begin();
+	for (i = this->buttons.begin(); i != this->buttons.end(); ++i) {
+		delete i->second;
+	}
 
-	this->buttons.clear();
 	this->initGui();
 }
 
@@ -104,7 +117,6 @@ void MainMenuState::resetGui()
 MainMenuState::MainMenuState(StateData* state_data) 
 	: State(state_data) {
 	this->initVariables();
-	this->initBackground();
 	this->initFonts();
 	this->initKeybinds();
 	this->initGui();
@@ -188,6 +200,7 @@ void MainMenuState::render(sf::RenderTarget* target)
 	}
 
 	target->draw(this->background);
+	target->draw(this->buttonBackground);
 	this->renderButtons(*target);
 	 
 
