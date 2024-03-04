@@ -8,6 +8,7 @@ class Player : public Entity
 private:
     // Variables
     bool isAttacking;
+    sf::Sprite weaponSprite;
 
     // Iniatilizer functions
     void initVariables();
@@ -32,7 +33,7 @@ public:
     void updateAttack();
     void updateAnimation(const float& dt);
     void update(const float& dt);
-    void render(sf::RenderTarget& target);
+    void render(sf::RenderTarget& target, sf::Shader* shader = NULL, const bool show_hitbox = false);
 
 };
 

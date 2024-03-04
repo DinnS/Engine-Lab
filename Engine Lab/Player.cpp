@@ -23,7 +23,7 @@ Player::Player(float x,float y, std::map<std::string, sf::Texture*> texture_shee
 	this->setPosition(x, y);
 
 	this->createHitboxComponent(this->sprite, 90.f, 100.f, 80.f, 100.f);
-	this->createMovementComponent(500.f, 1000.f, 600.f);
+	this->createMovementComponent(200.f, 1600.f, 1000.f);
 	this->createAnimationComponent(texture_sheets);
 	this->createAttributeComponent(1);
 
@@ -32,15 +32,15 @@ Player::Player(float x,float y, std::map<std::string, sf::Texture*> texture_shee
 	this->animationComponent->addAnimation("IDLE", "UP", 10.f, 0, 2, 5, 2, 256, 256);
 	this->animationComponent->addAnimation("IDLE", "DOWN", 10.f, 0, 3, 5, 3, 256, 256);
 
-	this->animationComponent->addAnimation("MOVING", "LEFT", 3.f, 0, 0, 11, 0, 256, 256);
-	this->animationComponent->addAnimation("MOVING", "RIGHT", 3.f, 0, 1, 11, 1, 256, 256);
-	this->animationComponent->addAnimation("MOVING", "UP", 3.f, 0, 2, 11, 2, 256, 256);
-	this->animationComponent->addAnimation("MOVING", "DOWN", 3.f, 0, 3, 11, 3, 256, 256);
+	this->animationComponent->addAnimation("MOVING", "LEFT", 5.f, 0, 0, 11, 0, 256, 256);
+	this->animationComponent->addAnimation("MOVING", "RIGHT", 5.f, 0, 1, 11, 1, 256, 256);
+	this->animationComponent->addAnimation("MOVING", "UP", 5.f, 0, 2, 11, 2, 256, 256);
+	this->animationComponent->addAnimation("MOVING", "DOWN", 5.f, 0, 3, 11, 3, 256, 256);
 
-	this->animationComponent->addAnimation("ATTACK", "LEFT", 5.f, 0, 0, 10, 0, 256, 256);
-	this->animationComponent->addAnimation("ATTACK", "RIGHT", 5.f, 0, 1, 10, 1, 256, 256);
-	this->animationComponent->addAnimation("ATTACK", "UP", 5.f, 0, 2, 10, 2, 256, 256);
-	this->animationComponent->addAnimation("ATTACK", "DOWN", 5.f, 0, 3, 10, 3, 256, 256);
+	this->animationComponent->addAnimation("ATTACK", "LEFT", 6.f, 0, 0, 10, 0, 256, 256);
+	this->animationComponent->addAnimation("ATTACK", "RIGHT", 6.f, 0, 1, 10, 1, 256, 256);
+	this->animationComponent->addAnimation("ATTACK", "UP", 6.f, 0, 2, 10, 2, 256, 256);
+	this->animationComponent->addAnimation("ATTACK", "DOWN", 6.f, 0, 3, 10, 3, 256, 256);
 	 
 
 }
@@ -218,10 +218,20 @@ void Player::update(const float& dt)
 	
 }
 
-void Player::render(sf::RenderTarget& target)
+void Player::render(sf::RenderTarget& target, sf::Shader* shader, const bool show_hitbox)
 {
-	target.draw(this->sprite);
+	if (shader) {
+		shader->setUniform("hasTexture", true);
+		shader->setUniform("lightPos", this->getCenter());
 
-	this->hitboxComponent->render(target);
+		target.draw(this->sprite, shader);
+	}
+	else {
+		target.draw(this->sprite);
+	}
+	
+
+	if(show_hitbox)
+		this->hitboxComponent->render(target);
 	
 }

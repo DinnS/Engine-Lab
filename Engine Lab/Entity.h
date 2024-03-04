@@ -45,6 +45,7 @@ public:
 
 	// Accessors
 	virtual const sf::Vector2f& getPosition() const;
+	virtual const sf::Vector2f getCenter() const;
 	virtual const sf::Vector2i getGridPosition(const int gridSizeI) const;
 	virtual const sf::FloatRect getGlobalBounds() const;
 	virtual const sf::FloatRect getNextPositionBounds(const float& dt) const;
@@ -59,6 +60,6 @@ public:
 	virtual void stopVelocity(bool stopLeft = true, bool stopRight = true, bool stopTop = true, bool stopBottom = true);
 
 	virtual void update(const float& dt) = 0;
-	virtual void render(sf::RenderTarget& target) = 0;
+	virtual void render(sf::RenderTarget& target, sf::Shader* shader, const bool show_hitbox) = 0;
 };
 

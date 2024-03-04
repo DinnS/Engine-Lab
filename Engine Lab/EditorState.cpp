@@ -551,7 +551,7 @@ void EditorState::render(sf::RenderTarget* target)
 	
 
 	for (auto& i : this->tileNames) {
-		this->tileMaps[i]->render(*target, this->mousePosGrid);
+		this->tileMaps[i]->render(*target, this->mousePosGrid, NULL, sf::Vector2f(), true, true);
 		this->tileMaps[i]->renderDeferred(*target);
 	}
 
