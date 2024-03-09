@@ -65,6 +65,32 @@ namespace gui {
 		void render(sf::RenderTarget& target);
 	};
 
+	class ButtonColor : public Button {
+	private:
+
+	public:
+		// Constructors/Destructors
+		ButtonColor();
+		~ButtonColor();
+
+		//Functions
+		void update(const sf::Vector2i& mousePosWindow);
+		void render(sf::RenderTarget& target);
+	};
+
+	class ButtonImage : public Button {
+	private:
+		
+	public:
+		// Constructors/Destructors
+		ButtonImage();
+		~ButtonImage();
+
+		//Functions
+		void update(const sf::Vector2i& mousePosWindow);
+		void render(sf::RenderTarget& target);
+	};
+
 	// DROP DOWN LIST ===============================================================
 
 	class DropDownList {

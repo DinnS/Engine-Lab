@@ -43,6 +43,11 @@ Player::Player(float x,float y, std::map<std::string, sf::Texture*> texture_shee
 	this->animationComponent->addAnimation("ATTACK", "DOWN", 6.f, 0, 3, 10, 3, 256, 256);
 	 
 
+	
+	if (!this->weaponTexture.loadFromFile("Resources/Sprites/Weapon/Sword.png")) {
+		std::cout << "ERROR::PLAYER::COULT NOT LOAD WEAPON TEXTURE" << std::endl;
+	}
+	this->weaponSprite.setTexture(this->weaponTexture);
 }
 
 Player::~Player()
@@ -214,6 +219,8 @@ void Player::update(const float& dt)
 	// Hitbox component update
 	
 	this->hitboxComponent->update();
+
+	this->weaponSprite.setPosition(this->getCenter());
 	
 	
 }
@@ -225,9 +232,14 @@ void Player::render(sf::RenderTarget& target, sf::Shader* shader, const bool sho
 		shader->setUniform("lightPos", this->getCenter());
 
 		target.draw(this->sprite, shader);
+
+		shader->setUniform("hasTexture", true);
+		shader->setUniform("lightPos", this->getCenter());
+		target.draw(this->weaponSprite, shader);
 	}
 	else {
 		target.draw(this->sprite);
+		target.draw(this->weaponSprite);
 	}
 	
 

@@ -9,6 +9,8 @@ private:
     // Variables
     bool isAttacking;
     sf::Sprite weaponSprite;
+    
+    sf::Texture weaponTexture;
 
     // Iniatilizer functions
     void initVariables();

@@ -51,6 +51,8 @@ const unsigned gui::calcCharSize(const unsigned modifier, const sf::VideoMode& v
 
 // BUTTON =======================================================================
 
+// MAIN BUTTON INHERIT
+
 // Constructors/Destructors
 
 gui::Button::Button(float x, float y, float width, float height,
@@ -180,7 +182,32 @@ void gui::Button::render(sf::RenderTarget& target)
 	target.draw(this->text);
 }
 
+// BUTTON COLOR
 
+// Constructors/Destructors
+
+/*
+
+gui::ButtonColor::ButtonColor() {
+
+}
+
+gui::ButtonColor::~ButtonColor() {
+
+}
+
+// BUTTON IMAGE
+
+gui::ButtonImage::ButtonImage() {
+
+}
+
+gui::ButtonImage::~ButtonImage() {
+
+}
+*/
+
+// Functions
 
 // DROP DOWN LIST ===============================================================
 

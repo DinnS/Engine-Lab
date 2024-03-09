@@ -21,23 +21,33 @@ private:
 	sf::Text cursorText;
 	PauseMenu* pauseMenu;
 
-	std::map<std::string, gui::Button*> buttons;
+	
 
 	std::vector<std::string> tileNames;
 
 	std::map<std::string, TileMap*> tileMaps;
 	std::string lastUsedTileMaps;
 
+	// GUI buttons
+	std::map<std::string, gui::Button*> buttons;
+
+	float buttonWidth;
+	float buttonHeight;
+
+	float barButtonWidth;
+	float barButtonHeight;
+
 	sf::RectangleShape toolbar;
 	sf::RectangleShape tileSheetBar;
 
+	// Selectors
 	sf::IntRect textureRect;
 	sf::RectangleShape selectorRect;
 
 	std::map<std::string, gui::TextureSelector*> texturesSelector;
 	std::pair<float, float> textureSelectorSize;
 	
-
+	// Properties of tiles
 	bool collision;
 	short type;
 	float cameraSpeed;
