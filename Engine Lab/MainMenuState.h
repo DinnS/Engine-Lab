@@ -20,7 +20,7 @@ private:
 	sf::Font font;
 
 	sf::RectangleShape buttonBackground;
-	std::map<std::string, gui::Button*> buttons;
+	std::map<std::string, gui::ButtonColor*> buttons;
 
 
 	// Initializer functions

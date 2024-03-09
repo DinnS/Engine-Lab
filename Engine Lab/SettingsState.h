@@ -12,7 +12,7 @@ private:
 	sf::RectangleShape background;
 	sf::Font font;
 
-	std::map<std::string, gui::Button*> buttons;
+	std::map<std::string, gui::ButtonColor*> buttons;
 	std::map<std::string, gui::DropDownList*> dropDownLists;
 
 	sf::Text optionsText;

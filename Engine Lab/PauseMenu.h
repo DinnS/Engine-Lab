@@ -14,7 +14,7 @@ private:
 	sf::RectangleShape background;
 	sf::RectangleShape container;
 
-	std::map<std::string, gui::Button*> buttons;
+	std::map<std::string, gui::ButtonColor*> buttons;
 
 	// Functions
 	
@@ -24,7 +24,7 @@ public:
 	virtual ~PauseMenu();	
 
 	// Accessor
-	std::map<std::string, gui::Button*>& getButtons();
+	std::map<std::string, gui::ButtonColor*>& getButtons();
 
 	// Functions
 	const bool isButtonPressed(const std::string key);

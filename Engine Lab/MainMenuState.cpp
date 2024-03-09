@@ -63,7 +63,7 @@ void MainMenuState::initGui()
 	this->buttonBackground.setFillColor(sf::Color(10, 10, 10, 220));
 
 	// Buttons
-	this->buttons["GAME_STATE"] = new gui::Button(
+	this->buttons["GAME_STATE"] = new gui::ButtonColor(
 		gui::percentToPixelX(10.f, videoMode), gui::percentToPixelY(30.f, videoMode),
 		gui::percentToPixelX(13.f, videoMode), gui::percentToPixelY(6.f, videoMode),
 		&this->font, "New Game", gui::calcCharSize(60, videoMode),
@@ -71,7 +71,7 @@ void MainMenuState::initGui()
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0)
 	); 
 
-	this->buttons["SETTINGS_STATE"] = new gui::Button(
+	this->buttons["SETTINGS_STATE"] = new gui::ButtonColor(
 		gui::percentToPixelX(10.f, videoMode), gui::percentToPixelY(43.f, videoMode),
 		gui::percentToPixelX(13.f, videoMode), gui::percentToPixelY(6.f, videoMode),
 		&this->font, "Settings", gui::calcCharSize(60, videoMode),
@@ -79,7 +79,7 @@ void MainMenuState::initGui()
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0)
 	);
 
-	this->buttons["EDITOR_STATE"] = new gui::Button(
+	this->buttons["EDITOR_STATE"] = new gui::ButtonColor(
 		gui::percentToPixelX(10.f, videoMode), gui::percentToPixelY(56.f, videoMode),
 		gui::percentToPixelX(13.f, videoMode), gui::percentToPixelY(6.f, videoMode),
 		&this->font, "Editor", gui::calcCharSize(60, videoMode),
@@ -87,7 +87,7 @@ void MainMenuState::initGui()
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0)
 	);
 
-	this->buttons["EXIT_STATE"] = new gui::Button(
+	this->buttons["EXIT_STATE"] = new gui::ButtonColor(
 		gui::percentToPixelX(10.f, videoMode), gui::percentToPixelY(75.f, videoMode),
 		gui::percentToPixelX(13.f, videoMode), gui::percentToPixelY(6.f, videoMode),
 		&this->font, "Quit", gui::calcCharSize(60, videoMode),

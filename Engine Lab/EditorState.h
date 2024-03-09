@@ -29,7 +29,7 @@ private:
 	std::string lastUsedTileMaps;
 
 	// GUI buttons
-	std::map<std::string, gui::Button*> buttons;
+	std::map<std::string, gui::ButtonColor*> buttons;
 
 	float buttonWidth;
 	float buttonHeight;

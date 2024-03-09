@@ -18,13 +18,40 @@ namespace gui {
 
 	// BUTTON =======================================================================
 
-	class Button
-	{
-	private:
+
+    // BUTTON DERIVED
+
+	class Button {
+	protected:
 		unsigned short buttonState;
 		unsigned short id;
 
 		sf::RectangleShape shape;
+
+	public:
+		// Constructors/Destructors
+		Button();
+		~Button();
+
+		// Accessors
+		const bool isPressed() const;
+		const unsigned short& getId() const;
+
+		// Modifiers
+		void setId(const unsigned short id);
+
+		//Functions
+		void update(const sf::Vector2i& mousePosWindow);
+		void render(sf::RenderTarget& target);
+
+	};
+
+
+	// BUTTON WITH BACKGROUND COLOR AND TEXT
+
+	class ButtonColor : public Button
+	{
+	private:
 		sf::Font* font;
 		sf::Text text;
 
@@ -42,43 +69,30 @@ namespace gui {
 
 	public:
 		// Constructors/Destructors
-		Button(float x, float y, float width, float height,
+		ButtonColor(float x, float y, float width, float height,
 			sf::Font* font, std::string text, unsigned character_size,
 			sf::Color text_idle_color, sf::Color text_hover_color, sf::Color text_active_color,
 			sf::Color idle_color, sf::Color hover_color, sf::Color active_color,
 			sf::Color outline_idle_color = sf::Color::Transparent, sf::Color outline_hover_color = sf::Color::Transparent, sf::Color outline_active_color = sf::Color::Transparent,
 			unsigned short id = 0
 		);
-		~Button();
+		~ButtonColor();
 
 		// Accessors
-		const bool isPressed() const;
 		const std::string getText() const;
-		const unsigned short& getId() const;
 
 		// Modifiers
 		void setText(const std::string text);
-		void setId(const unsigned short id);
-
+		
 		//Functions
 		void update(const sf::Vector2i& mousePosWindow);
 		void render(sf::RenderTarget& target);
 	};
 
-	class ButtonColor : public Button {
-	private:
 
-	public:
-		// Constructors/Destructors
-		ButtonColor();
-		~ButtonColor();
+	// BUTTON WITH IMAGE BACKGROUND
 
-		//Functions
-		void update(const sf::Vector2i& mousePosWindow);
-		void render(sf::RenderTarget& target);
-	};
-
-	class ButtonImage : public Button {
+	class ButtonImage  {
 	private:
 		
 	public:
@@ -100,8 +114,8 @@ namespace gui {
 		float keyTimeMax;
 
 		sf::Font& font;
-		gui::Button* activeElement;
-		std::vector<gui::Button*> list;
+		gui::ButtonColor* activeElement;
+		std::vector<gui::ButtonColor*> list;
 		bool showList;
 		
 

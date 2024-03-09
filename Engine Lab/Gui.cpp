@@ -51,11 +51,62 @@ const unsigned gui::calcCharSize(const unsigned modifier, const sf::VideoMode& v
 
 // BUTTON =======================================================================
 
-// MAIN BUTTON INHERIT
+// BUTTON DERIVED
 
 // Constructors/Destructors
 
-gui::Button::Button(float x, float y, float width, float height,
+gui::Button::Button() {
+
+}
+
+gui::Button::~Button() {
+
+}
+
+// Accessors
+
+const bool gui::Button::isPressed() const
+{
+	if (this->buttonState == BTN_ACTIVE) {
+		return true;
+	}
+	return false;
+}
+
+const unsigned short& gui::Button::getId() const
+{
+	return this->id;
+}
+
+// Modifiers
+
+void gui::Button::setId(const unsigned short id)
+{
+	this->id = id;
+}
+
+
+//Functions
+
+void gui::Button::update(const sf::Vector2i& mousePosWindow)
+{
+
+}
+
+
+void gui::Button::render(sf::RenderTarget& target)
+{
+	target.draw(this->shape);
+}
+
+
+
+
+// BUTTON WITH BACKGROUND COLOR AND TEXT
+
+// Constructors/Destructors
+
+gui::ButtonColor::ButtonColor(float x, float y, float width, float height,
 	sf::Font* font, std::string text,unsigned character_size,
 	sf::Color text_idle_color, sf::Color text_hover_color, sf::Color text_active_color,
 	sf::Color idle_color, sf::Color hover_color, sf::Color active_color,
@@ -98,45 +149,28 @@ gui::Button::Button(float x, float y, float width, float height,
 
 }
 
-gui::Button::~Button()
+gui::ButtonColor::~ButtonColor()
 {
 }
 
 // Accessors
 
-const bool gui::Button::isPressed() const
-{
-	if (this->buttonState == BTN_ACTIVE) {
-		return true;
-	}
-	return false;
-}
-
-const std::string gui::Button::getText() const
+const std::string gui::ButtonColor::getText() const
 {
 	return this->text.getString();
 }
 
-const unsigned short& gui::Button::getId() const
-{
-	return this->id;
-}
-
 
 // Modifiers
-void gui::Button::setText(const std::string text)
+void gui::ButtonColor::setText(const std::string text)
 {
 	this->text.setString(text);
 }
 
-void gui::Button::setId(const unsigned short id)
-{
-	this->id = id;
-}
 
 
 //Functions
-void gui::Button::update(const sf::Vector2i& mousePosWindow)
+void gui::ButtonColor::update(const sf::Vector2i& mousePosWindow)
 {
 	/* Update the booleans for hoverand pressed */
 	this->buttonState = BTN_IDLE;
@@ -176,27 +210,14 @@ void gui::Button::update(const sf::Vector2i& mousePosWindow)
 
 }
 
-void gui::Button::render(sf::RenderTarget& target)
+void gui::ButtonColor::render(sf::RenderTarget& target)
 {
-	target.draw(this->shape);
+	Button::render(target);
 	target.draw(this->text);
 }
 
-// BUTTON COLOR
 
-// Constructors/Destructors
-
-/*
-
-gui::ButtonColor::ButtonColor() {
-
-}
-
-gui::ButtonColor::~ButtonColor() {
-
-}
-
-// BUTTON IMAGE
+// BUTTON WITH IMAGE BACKGROUND
 
 gui::ButtonImage::ButtonImage() {
 
@@ -205,7 +226,7 @@ gui::ButtonImage::ButtonImage() {
 gui::ButtonImage::~ButtonImage() {
 
 }
-*/
+
 
 // Functions
 
@@ -221,7 +242,7 @@ gui::DropDownList::DropDownList(
 {
 
 
-	this->activeElement = new gui::Button(
+	this->activeElement = new gui::ButtonColor(
 		x, y, width, height,
 		&this->font, list[default_index], 18,
 		sf::Color(255, 255, 255, 150), sf::Color(255, 255, 255, 200), sf::Color(20, 20, 20, 50),
@@ -231,7 +252,7 @@ gui::DropDownList::DropDownList(
 
 	for (unsigned int i = 0; i < numberOfElements; i++) {
 		this->list.push_back(
-			new gui::Button(
+			new gui::ButtonColor(
 				x, y + (height * (i + 1)), width, height,
 				&this->font, list[i], 15,
 				sf::Color(255, 255, 255, 150), sf::Color(255, 255, 255, 255), sf::Color(20, 20, 20, 50),

@@ -160,7 +160,7 @@ void EditorState::initButtons()
 	this->buttonHeight = 100.f;
 		
 	// Tool button
-	this->buttons["COLLISION"] = new gui::Button(
+	this->buttons["COLLISION"] = new gui::ButtonColor(
 		this->toolbar.getPosition().x + (this->barButtonWidth / 2.f) - (this->buttonWidth / 2.f), this->buttonHeight,
 		this->buttonWidth, this->buttonHeight,
 		&this->font, "COL", 26,
@@ -168,7 +168,7 @@ void EditorState::initButtons()
 		sf::Color(70, 70, 70, 200), sf::Color(150, 150, 150, 250), sf::Color(20, 20, 20, 50)
 	);
 
-	this->buttons["DEFAULT_TILE"] = new gui::Button(
+	this->buttons["DEFAULT_TILE"] = new gui::ButtonColor(
 		this->toolbar.getPosition().x + (this->barButtonWidth / 2.f) - (this->buttonWidth / 2.f), this->buttonHeight * 3,
 		this->buttonWidth, this->buttonHeight,
 		&this->font, "DEF_T", 26,
@@ -176,7 +176,7 @@ void EditorState::initButtons()
 		sf::Color(70, 70, 70, 200), sf::Color(150, 150, 150, 250), sf::Color(20, 20, 20, 50)
 	);
 	
-	this->buttons["DAMAGE_TILE"] = new gui::Button(
+	this->buttons["DAMAGE_TILE"] = new gui::ButtonColor(
 		this->toolbar.getPosition().x + (this->barButtonWidth / 2.f) - (this->buttonWidth / 2.f), this->buttonHeight * 5,
 		this->buttonWidth, this->buttonHeight,
 		&this->font, "DAM_T", 26,
@@ -184,7 +184,7 @@ void EditorState::initButtons()
 		sf::Color(70, 70, 70, 200), sf::Color(150, 150, 150, 250), sf::Color(20, 20, 20, 50)
 	);
 
-	this->buttons["ONTOP_TILE"] = new gui::Button(
+	this->buttons["ONTOP_TILE"] = new gui::ButtonColor(
 		this->toolbar.getPosition().x + (this->barButtonWidth / 2.f) - (this->buttonWidth / 2.f), this->buttonHeight * 7,
 		this->buttonWidth, this->buttonHeight,
 		&this->font, "TOP_T", 26,
@@ -194,7 +194,7 @@ void EditorState::initButtons()
 
 	// Sheet button
 
-	this->buttons["TERRAIN_SHEET"] = new gui::Button(
+	this->buttons["TERRAIN_SHEET"] = new gui::ButtonColor(
 		this->tileSheetBar.getPosition().x + (this->barButtonWidth / 2.f) - (this->buttonWidth / 2.f), this->buttonHeight,
 		this->buttonWidth, this->buttonHeight,
 		&this->font, "TS", 26,
@@ -202,7 +202,7 @@ void EditorState::initButtons()
 		sf::Color(70, 70, 70, 200), sf::Color(150, 150, 150, 250), sf::Color(20, 20, 20, 50)
 	);
 
-	this->buttons["PROP_SHEET"] = new gui::Button(
+	this->buttons["PROP_SHEET"] = new gui::ButtonColor(
 		this->tileSheetBar.getPosition().x + (this->barButtonWidth / 2.f) - (this->buttonWidth / 2.f), this->buttonHeight * 3,
 		this->buttonWidth, this->buttonHeight,
 		&this->font, "PS", 26,
@@ -210,7 +210,7 @@ void EditorState::initButtons()
 		sf::Color(70, 70, 70, 200), sf::Color(150, 150, 150, 250), sf::Color(20, 20, 20, 50)
 	);
 
-	this->buttons["FLORA_SHEET"] = new gui::Button(
+	this->buttons["FLORA_SHEET"] = new gui::ButtonColor(
 		this->tileSheetBar.getPosition().x + (this->barButtonWidth / 2.f) - (this->buttonWidth / 2.f), this->buttonHeight * 5,
 		this->buttonWidth, this->buttonHeight,
 		&this->font, "FS", 26,

@@ -59,7 +59,7 @@ void SettingsState::initGui()
 	}
 
 	// Buttons
-	this->buttons["APPLY"] = new gui::Button(
+	this->buttons["APPLY"] = new gui::ButtonColor(
 		gui::percentToPixelX(10.f, videoMode), gui::percentToPixelY(75.f, videoMode),
 		gui::percentToPixelX(13.f, videoMode), gui::percentToPixelY(6.f, videoMode),
 		&this->font, "Apply", gui::calcCharSize(60, videoMode),
@@ -67,7 +67,7 @@ void SettingsState::initGui()
 		sf::Color(70, 70, 70, 0), sf::Color(150, 150, 150, 0), sf::Color(20, 20, 20, 0)
 	);
 
-	this->buttons["BACK"] = new gui::Button(
+	this->buttons["BACK"] = new gui::ButtonColor(
 		gui::percentToPixelX(30.f, videoMode), gui::percentToPixelY(75.f, videoMode),
 		gui::percentToPixelX(13.f, videoMode), gui::percentToPixelY(6.f, videoMode),
 		&this->font, "Back", gui::calcCharSize(60, videoMode),
