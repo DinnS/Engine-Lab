@@ -21,15 +21,14 @@ private:
 	sf::Text cursorText;
 	PauseMenu* pauseMenu;
 
-	
-
 	std::vector<std::string> tileNames;
 
 	std::map<std::string, TileMap*> tileMaps;
 	std::string lastUsedTileMaps;
 
 	// GUI buttons
-	std::map<std::string, gui::ButtonColor*> buttons;
+	std::map<std::string, gui::ButtonColor*> buttonsTemp;
+	std::map<std::string, gui::ButtonImage*> buttons;
 
 	float buttonWidth;
 	float buttonHeight;
@@ -39,6 +38,8 @@ private:
 
 	sf::RectangleShape toolbar;
 	sf::RectangleShape tileSheetBar;
+
+	sf::Texture tileIcon;
 
 	// Selectors
 	sf::IntRect textureRect;

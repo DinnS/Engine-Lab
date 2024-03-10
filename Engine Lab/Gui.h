@@ -26,11 +26,16 @@ namespace gui {
 		unsigned short buttonState;
 		unsigned short id;
 
-		sf::RectangleShape shape;
+		float buttonPositionX;
+		float buttonPositionY;
+		float buttonWidth;
+		float buttonHeight;
 
 	public:
 		// Constructors/Destructors
-		Button();
+		Button(float x, float y, float width, float height,
+			unsigned short id = 0
+		);
 		~Button();
 
 		// Accessors
@@ -40,10 +45,6 @@ namespace gui {
 		// Modifiers
 		void setId(const unsigned short id);
 
-		//Functions
-		void update(const sf::Vector2i& mousePosWindow);
-		void render(sf::RenderTarget& target);
-
 	};
 
 
@@ -52,6 +53,7 @@ namespace gui {
 	class ButtonColor : public Button
 	{
 	private:
+		sf::RectangleShape shape;
 		sf::Font* font;
 		sf::Text text;
 
@@ -92,15 +94,20 @@ namespace gui {
 
 	// BUTTON WITH IMAGE BACKGROUND
 
-	class ButtonImage  {
+	class ButtonImage : public Button {
 	private:
-		
+		sf::Sprite sprite;
+		sf::Texture* texture;
+
 	public:
 		// Constructors/Destructors
-		ButtonImage();
+		ButtonImage(float x, float y, float width, float height,
+			sf::Texture* texture, 
+			unsigned short id = 0
+		);
 		~ButtonImage();
 
-		//Functions
+		// Functions
 		void update(const sf::Vector2i& mousePosWindow);
 		void render(sf::RenderTarget& target);
 	};

@@ -158,9 +158,14 @@ void EditorState::initButtons()
 {
 	this->buttonWidth = 100.f;
 	this->buttonHeight = 100.f;
+
+	// Init icon
+	if (!this->tileIcon.loadFromFile("Resources/Graphics/EditorState/tileIcon.png")) {
+		std::cout << "ERROR::PLAYER::COULT NOT LOAD WEAPON TEXTURE" << std::endl;
+	}
 		
 	// Tool button
-	this->buttons["COLLISION"] = new gui::ButtonColor(
+	this->buttonsTemp["COLLISION"] = new gui::ButtonColor(
 		this->toolbar.getPosition().x + (this->barButtonWidth / 2.f) - (this->buttonWidth / 2.f), this->buttonHeight,
 		this->buttonWidth, this->buttonHeight,
 		&this->font, "COL", 26,
@@ -168,7 +173,7 @@ void EditorState::initButtons()
 		sf::Color(70, 70, 70, 200), sf::Color(150, 150, 150, 250), sf::Color(20, 20, 20, 50)
 	);
 
-	this->buttons["DEFAULT_TILE"] = new gui::ButtonColor(
+	this->buttonsTemp["DEFAULT_TILE"] = new gui::ButtonColor(
 		this->toolbar.getPosition().x + (this->barButtonWidth / 2.f) - (this->buttonWidth / 2.f), this->buttonHeight * 3,
 		this->buttonWidth, this->buttonHeight,
 		&this->font, "DEF_T", 26,
@@ -176,7 +181,7 @@ void EditorState::initButtons()
 		sf::Color(70, 70, 70, 200), sf::Color(150, 150, 150, 250), sf::Color(20, 20, 20, 50)
 	);
 	
-	this->buttons["DAMAGE_TILE"] = new gui::ButtonColor(
+	this->buttonsTemp["DAMAGE_TILE"] = new gui::ButtonColor(
 		this->toolbar.getPosition().x + (this->barButtonWidth / 2.f) - (this->buttonWidth / 2.f), this->buttonHeight * 5,
 		this->buttonWidth, this->buttonHeight,
 		&this->font, "DAM_T", 26,
@@ -184,7 +189,7 @@ void EditorState::initButtons()
 		sf::Color(70, 70, 70, 200), sf::Color(150, 150, 150, 250), sf::Color(20, 20, 20, 50)
 	);
 
-	this->buttons["ONTOP_TILE"] = new gui::ButtonColor(
+	this->buttonsTemp["ONTOP_TILE"] = new gui::ButtonColor(
 		this->toolbar.getPosition().x + (this->barButtonWidth / 2.f) - (this->buttonWidth / 2.f), this->buttonHeight * 7,
 		this->buttonWidth, this->buttonHeight,
 		&this->font, "TOP_T", 26,
@@ -194,15 +199,13 @@ void EditorState::initButtons()
 
 	// Sheet button
 
-	this->buttons["TERRAIN_SHEET"] = new gui::ButtonColor(
+	this->buttons["TERRAIN_SHEET"] = new gui::ButtonImage(
 		this->tileSheetBar.getPosition().x + (this->barButtonWidth / 2.f) - (this->buttonWidth / 2.f), this->buttonHeight,
 		this->buttonWidth, this->buttonHeight,
-		&this->font, "TS", 26,
-		sf::Color(255, 255, 255, 200), sf::Color(255, 255, 255, 250), sf::Color(255, 255, 255, 50),
-		sf::Color(70, 70, 70, 200), sf::Color(150, 150, 150, 250), sf::Color(20, 20, 20, 50)
+		&this->tileIcon
 	);
 
-	this->buttons["PROP_SHEET"] = new gui::ButtonColor(
+	this->buttonsTemp["PROP_SHEET"] = new gui::ButtonColor(
 		this->tileSheetBar.getPosition().x + (this->barButtonWidth / 2.f) - (this->buttonWidth / 2.f), this->buttonHeight * 3,
 		this->buttonWidth, this->buttonHeight,
 		&this->font, "PS", 26,
@@ -210,7 +213,7 @@ void EditorState::initButtons()
 		sf::Color(70, 70, 70, 200), sf::Color(150, 150, 150, 250), sf::Color(20, 20, 20, 50)
 	);
 
-	this->buttons["FLORA_SHEET"] = new gui::ButtonColor(
+	this->buttonsTemp["FLORA_SHEET"] = new gui::ButtonColor(
 		this->tileSheetBar.getPosition().x + (this->barButtonWidth / 2.f) - (this->buttonWidth / 2.f), this->buttonHeight * 5,
 		this->buttonWidth, this->buttonHeight,
 		&this->font, "FS", 26,
@@ -240,8 +243,8 @@ EditorState::EditorState(StateData* state_data)
 }
 
 EditorState::~EditorState() {
-	auto i = this->buttons.begin();
-	for (i = this->buttons.begin(); i != this->buttons.end(); ++i) {
+	auto i = this->buttonsTemp.begin();
+	for (i = this->buttonsTemp.begin(); i != this->buttonsTemp.end(); ++i) {
 		delete i->second;
 	}
 
@@ -328,8 +331,6 @@ void EditorState::updateEditorInput(const float& dt)
 			}
 		}
 		
-
-		
 	}
 
 	// Toggle collision
@@ -359,13 +360,17 @@ void EditorState::updateButtons()
 {
 	/*Updates all the button and handles their functionality*/
 
-	for (auto &i : this->buttons) {
+	for (auto &i : this->buttonsTemp) {
+		i.second->update(this->mousePosWindow);
+	}
+
+	for (auto& i : this->buttons) {
 		i.second->update(this->mousePosWindow);
 	}
 
 	// Tool buttons
 	
-	if (this->buttons["COLLISION"]->isPressed() && this->getKeyTime()) {
+	if (this->buttonsTemp["COLLISION"]->isPressed() && this->getKeyTime()) {
 		if (this->collision) {
 			this->collision = false;
 		}
@@ -374,15 +379,15 @@ void EditorState::updateButtons()
 		}
 	}
 
-	if (this->buttons["DEFAULT_TILE"]->isPressed() && this->getKeyTime()) {
+	if (this->buttonsTemp["DEFAULT_TILE"]->isPressed() && this->getKeyTime()) {
 		this->type = 0;
 	}
 
-	if (this->buttons["DAMAGE_TILE"]->isPressed() && this->getKeyTime()) {
+	if (this->buttonsTemp["DAMAGE_TILE"]->isPressed() && this->getKeyTime()) {
 		this->type = 1;
 	}
 
-	if (this->buttons["ONTOP_TILE"]->isPressed() && this->getKeyTime()) {
+	if (this->buttonsTemp["ONTOP_TILE"]->isPressed() && this->getKeyTime()) {
 		this->type = 2;
 	}
 	
@@ -405,7 +410,7 @@ void EditorState::updateButtons()
 	}
 
 	// Open texture props sheet
-	if (this->buttons["PROP_SHEET"]->isPressed() && this->getKeyTime()) {
+	if (this->buttonsTemp["PROP_SHEET"]->isPressed() && this->getKeyTime()) {
 		this->texturesSelector[this->tileNames[1]]->toggleTextureSelector();
 
 		// Close other texture sheets
@@ -422,7 +427,7 @@ void EditorState::updateButtons()
 	}
 
 	// Open texture green sheet
-	if (this->buttons["FLORA_SHEET"]->isPressed() && this->getKeyTime()) {
+	if (this->buttonsTemp["FLORA_SHEET"]->isPressed() && this->getKeyTime()) {
 		this->texturesSelector[this->tileNames[2]]->toggleTextureSelector();
 
 		// Close other texture sheets
@@ -521,6 +526,10 @@ void EditorState::update(const float& dt)
 
 void EditorState::renderButtons(sf::RenderTarget& target)
 {
+	for (auto i : this->buttonsTemp) {
+		i.second->render(target);
+	}
+
 	for (auto i : this->buttons) {
 		i.second->render(target);
 	}
